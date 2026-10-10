@@ -1,0 +1,1275 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Elementary Math 1 · EduPrep</title>
+<meta name="description" content="Elementary Math 1 – interactive smart book: Numbers, 4 Fundamental Operations, Order of Operations.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#e8eef3;--ink:#1d2433;--muted:#5b6475;--paper:#fff;--c:#2e9e3a;--c2:#e9f6ea;--cd:#1d6b25;--ok:#19a34a;--bad:#e03131;--pur:#7b4fc9;--pur2:#f3eefc;--tea:#1497a8;--tea2:#e3f5f7}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);transition:background-color .8s ease;color:var(--ink);font-family:Nunito,system-ui,sans-serif;font-size:16.5px;line-height:1.55;-webkit-text-size-adjust:100%}
+button{font:inherit;cursor:pointer}
+.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:8px 12px;background:#fff;box-shadow:0 1px 8px rgba(0,0,0,.08)}
+.top .ttl{flex:1;font-family:'Lilita One',sans-serif;font-size:19px;color:#1d6b25;display:flex;align-items:center;gap:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top .ttl svg{width:28px;height:28px;flex:none}
+.ib{border:0;background:#eef2f6;border-radius:10px;padding:7px 11px;font-weight:800;color:var(--ink)}
+#pg{font-weight:800;color:var(--muted);font-size:14px;white-space:nowrap}
+#drawer{position:fixed;top:0;left:0;bottom:0;width:min(340px,88vw);background:#fff;z-index:40;transform:translateX(-102%);transition:transform .25s;overflow:auto;padding:16px;box-shadow:4px 0 24px rgba(0,0,0,.15)}
+#drawer.open{transform:none}
+#scrim{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:30;display:none}
+#scrim.open{display:block}
+#drawer h3{font-family:'Lilita One';color:#1d6b25;margin:4px 0 6px;font-size:22px}
+#score{background:#e9f6ea;border-radius:12px;padding:10px 12px;margin:8px 0 14px;font-weight:700}
+#score .bar{height:8px;background:#cfe9d3;border-radius:9px;margin-top:6px;overflow:hidden}
+#score .bar i{display:block;height:100%;background:var(--ok);width:0}
+.tocl a{display:flex;justify-content:space-between;gap:8px;padding:7px 8px;border-radius:8px;color:var(--ink);text-decoration:none;font-weight:700}
+.tocl a:hover{background:#f1f4f7}
+.tocl a.l1{padding-left:22px;font-weight:600;color:#3a4252}
+.tocl a.l2{padding-left:36px;font-weight:600;color:#5b6475;font-size:15px}
+.tocl a.ch{margin-top:8px;color:var(--cd)}
+.tocl a.cur{background:#e9f6ea}
+.book{max-width:820px;margin:0 auto;padding:14px 12px 96px;perspective:1800px;position:relative;z-index:1}
+#bgfx{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none;display:block}
+.page{background:rgba(255,255,255,.88)!important}
+@media(max-width:700px){.page{background:rgba(255,255,255,.8)!important}.box{background-clip:padding-box}}
+.page .cover,.page .back{background-color:#2fa33a}
+.fxsw{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;margin:-4px 0 12px;cursor:pointer}
+.fxsw input{width:18px;height:18px;accent-color:#1d6b25}
+.page{display:none;background:var(--paper);border-radius:16px;box-shadow:0 6px 28px rgba(20,40,60,.13);min-height:72vh;position:relative;overflow:hidden;padding-bottom:46px}
+.page.on{display:block}
+.page.fn{animation:fn .45s ease both;transform-origin:left center}
+.page.fp{animation:fp .45s ease both;transform-origin:right center}
+@keyframes fn{from{opacity:0;transform:rotateY(-28deg) translateX(30px)}to{opacity:1;transform:none}}
+@keyframes fp{from{opacity:0;transform:rotateY(28deg) translateX(-30px)}to{opacity:1;transform:none}}
+.band{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 18px 0 0;border-bottom:3px solid var(--c2)}
+.band span{background:var(--c);color:#fff;font-family:'Lilita One';letter-spacing:.5px;padding:10px 26px 10px 20px;border-radius:0 0 40px 0;font-size:clamp(15px,3.6vw,22px)}
+.band em{font-style:normal;font-size:11px;letter-spacing:2px;color:#9aa3b1;font-weight:800;text-transform:uppercase;white-space:nowrap}
+.pc{padding:18px clamp(16px,4.5vw,44px) 10px}
+.pno{position:absolute;bottom:12px;left:0;right:0;display:flex;align-items:center;gap:12px;padding:0 40px}
+.pno:before,.pno:after{content:"";flex:1;height:3px;background:var(--c);border-radius:3px;opacity:.8}
+.pno b{background:var(--c);color:#fff;padding:2px 14px;border-radius:4px;font-size:15px}
+p{margin:.55em 0}
+.ctr{text-align:center;font-weight:700;font-size:1.05em}
+h2.h1{font-family:'Lilita One';color:var(--cd);text-align:center;font-weight:400;font-size:clamp(24px,5.5vw,34px);margin:6px 0 12px;border-bottom:3px solid var(--c);padding-bottom:6px}
+h3.h2{color:var(--cd);font-size:21px;margin:18px 0 8px;border-bottom:2px solid var(--c);padding-bottom:3px}
+h4.h3{color:var(--cd);margin:14px 0 6px;font-size:17.5px}
+.t{color:var(--cd)}
+.pill{display:block;width:max-content;max-width:100%;margin:6px auto 14px;border:4px solid var(--c);border-radius:20px;padding:5px 26px;font-weight:900;letter-spacing:3px;color:var(--cd);text-transform:uppercase;font-size:15px;outline:1.5px dashed var(--c);outline-offset:-9px;text-align:center}
+.box{border-radius:6px;margin:10px 0;padding:10px 14px 10px 54px;position:relative;min-height:44px}
+.box:before{position:absolute;left:0;top:0;bottom:0;width:40px;display:flex;align-items:flex-start;justify-content:center;padding-top:10px;color:#fff;font-weight:900}
+.exm{background:var(--pur2);border:2px solid var(--pur)}
+.exm:before{content:"✎";background:var(--pur);font-size:18px}
+.exm>b:first-child{color:var(--pur)}
+.inf{background:var(--tea2);border:2px dashed var(--tea)}
+.inf:before{content:"i";background:var(--tea);font-family:Georgia,serif;font-size:20px}
+.inf>b:first-child{color:var(--tea)}
+.rul{background:#e7f2fd;border:2px solid #2d9ae8}
+.rul:before{content:"≡";background:#2d9ae8;font-size:20px}
+.rul>b:first-child{color:#1150b0}
+.wrn{background:#fdeceb;border:2px solid var(--bad)}
+.wrn:before{content:"⚠";background:var(--bad);font-size:18px}
+.wrn>b:first-child{color:var(--bad)}
+.rad{display:inline-flex;align-items:stretch;vertical-align:middle;white-space:nowrap;line-height:1.2;margin:0 1px}
+.rad>.rs{flex:none;width:.62em;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 24' preserveAspectRatio='none'%3E%3Cpath d='M0.6 14.2 L3.4 12.4 L6.6 22.6 L11.4 0.8 L12 0.8' fill='none' stroke='black' stroke-width='1.7' stroke-linejoin='round' stroke-linecap='round'/%3E%3C/svg%3E") center/100% 100% no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 24' preserveAspectRatio='none'%3E%3Cpath d='M0.6 14.2 L3.4 12.4 L6.6 22.6 L11.4 0.8 L12 0.8' fill='none' stroke='black' stroke-width='1.7' stroke-linejoin='round' stroke-linecap='round'/%3E%3C/svg%3E") center/100% 100% no-repeat}
+.rad>.ri{border-top:1.7px solid currentColor;padding:2px 3px 0 2px;margin-left:-.5px}
+.rad .ri input.g{margin:3px 0 2px}
+.rbig{display:inline-flex;align-items:flex-start;gap:2px}
+.rbig>i{width:22px;height:22px;border:2px solid #888;display:inline-block;margin-top:2px}
+.rbig .rad>.rs{width:30px}
+.rbig .rad>.ri{border-top-width:3px;padding:8px 6px 4px}
+.rbig u{display:block;width:46px;height:46px;border:2px solid #888}
+/* speech */
+.box{padding-right:46px}
+.bsay{position:absolute;right:6px;top:6px;width:32px;height:32px;border:0;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.18);font-size:15px;line-height:1}
+.box.talk{box-shadow:0 0 0 3px #ffd43b;animation:glow 1.2s ease-in-out infinite alternate}
+@keyframes glow{to{box-shadow:0 0 0 6px rgba(255,212,59,.45)}}
+.box.talk .bsay{background:#ffd43b}
+@media(max-width:600px){.band em{display:none}}
+.spd{display:flex;align-items:center;gap:8px;font-weight:700;margin:-4px 0 12px;font-size:14px}
+.spd input{flex:1;accent-color:#1d6b25}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-size:.92em;line-height:1.15;margin:0 2px}
+.fr>span:first-child{border-bottom:1.5px solid currentColor;padding:0 3px}
+.diag{display:flex;justify-content:center;gap:clamp(14px,6vw,50px);margin:12px 0 4px;text-align:center}
+.diag div b{display:block;font-size:22px}
+.diag div small{display:block;color:var(--muted);font-weight:700}
+.diag div b:after{content:"↓";display:block;color:#888;font-size:16px}
+.underl{text-align:center;color:var(--muted);font-weight:800;border-top:2px solid #bbb;width:min(320px,80%);margin:0 auto 10px;padding-top:4px}
+.nl{width:100%;max-width:470px;display:block;margin:6px auto;color:#222}
+.nl .arc{stroke-dasharray:80;stroke-dashoffset:80}
+.nl .dot1{opacity:0}
+.nl.go .arc{animation:draw .35s ease forwards}
+.nl.go .dot1{animation:pop .25s ease forwards}
+.nl.static .arc{stroke-dashoffset:0}.nl.static .dot1{opacity:1}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes pop{to{opacity:1}}
+.cap{display:flex;justify-content:space-around;font-weight:700;font-size:14px;max-width:470px;margin:0 auto}
+/* exercises */
+.exh{background:var(--c);color:#fff;text-align:center;font-family:'Lilita One';font-size:23px;padding:6px;margin:18px 0 10px;letter-spacing:.5px}
+.q{margin:12px 0 22px}
+.q h4{color:var(--cd);margin:8px 0;font-size:17px}
+.items{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:8px 22px}
+.it{display:flex;align-items:center;flex-wrap:wrap;gap:6px;padding:4px 0}
+.it>b{color:var(--cd);min-width:22px}
+.it .ex{font-weight:700;white-space:nowrap}
+.it .tx{flex:1;min-width:180px}
+input.g{width:78px;font:inherit;font-weight:800;text-align:center;border:2px solid #c9d2dc;border-radius:9px;padding:4px 6px;background:#fbfcfd;color:var(--ink)}
+input.g:focus{outline:none;border-color:var(--c)}
+input.g.wide{width:170px}
+.g.ok,input.g.ok{border-color:var(--ok)!important;background:#ebf9f0}
+.g.bad,input.g.bad{border-color:var(--bad)!important;background:#fdeeee}
+.sol{color:var(--ok);font-weight:900;font-size:14px}
+.tf,.sets{display:inline-flex;border:2px solid #c9d2dc;border-radius:10px;overflow:hidden}
+.tf button,.sets button{border:0;background:#fff;padding:5px 10px;font-weight:800;color:var(--cd);border-right:1px solid #dde3ea}
+.tf button:last-child,.sets button:last-child{border-right:0}
+.tf button.sel,.sets button.sel{background:var(--c);color:#fff}
+.tfi{border-bottom:1px dashed #e2e6ea}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;max-width:520px;border-radius:10px;padding:4px}
+.grid button{border:1.5px solid #f2c48e;background:#fff;border-radius:8px;padding:7px 0;font-weight:800}
+.grid button.sel{background:var(--c);color:#fff;border-color:var(--c);border-radius:50%}
+.grid button.gok{background:var(--ok);border-color:var(--ok);color:#fff;border-radius:50%}
+.grid button.gbad{background:var(--bad);border-color:var(--bad);color:#fff;border-radius:50%}
+.grid button.should{background:#d3f9d8;border:2.5px dashed var(--ok);color:#0b6b2c;border-radius:50%}
+.gsol{display:block;margin-top:8px;background:#ebf9f0;border:2px solid var(--ok);border-radius:10px;padding:6px 10px}
+.now{background:#fff3bf!important;box-shadow:0 0 0 4px #fff3bf;border-radius:4px;transition:background .2s}
+.ln.now{box-shadow:0 0 0 3px #ffe066}
+.psay{border:0;background:#fff;color:var(--cd);border:2px solid var(--c);border-radius:20px;padding:4px 12px;font-weight:900;font-size:13px;white-space:nowrap}
+.psay.on{background:#ffd43b;border-color:#f0b400}
+.hsay{border:0;background:var(--c2);border-radius:50%;width:30px;height:30px;font-size:14px;margin-left:8px;vertical-align:middle}
+.hsay.on,.bsay.on{background:#ffd43b}
+.cbox{position:relative}
+.ccov{position:relative}
+.ccov>.psay{position:absolute;right:12px;top:10px}
+.band{flex-wrap:nowrap}.band .rt{display:flex;align-items:center;gap:10px}
+.qbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:10px}
+.qbar button{border:0;border-radius:10px;padding:7px 14px;font-weight:800}
+.chk{background:var(--c);color:#fff}
+.shw{background:#eef2f6;color:var(--ink)}
+.rst{background:#eef2f6;color:var(--muted)}
+.sc{font-weight:900}
+.qbar button:disabled,.drawbtn:disabled{opacity:.5;cursor:not-allowed}
+.lockk{color:#888;font-weight:700;font-size:14px}
+.drawbtn{border:1.5px solid var(--c);background:#fff;color:var(--cd);border-radius:8px;padding:3px 9px;font-weight:800;font-size:14px}
+.nlit{flex-direction:row}
+.nlit .nl{flex-basis:100%}
+.rootd{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:10px 0}
+/* covers */
+.cover{background:#2fa33a;color:#fff;min-height:88vh;padding:26px clamp(18px,5vw,48px) 30px;position:relative;text-align:center;overflow:hidden}
+.cover:before{content:"E=MC²   π   √x   x+y=   ∞   %";position:absolute;inset:0;font-family:'Lilita One';font-size:68px;line-height:1.6;color:rgba(255,255,255,.07);word-spacing:40px;padding:20px;pointer-events:none}
+.cover .lg{position:absolute;right:22px;top:0;background:#dff7d6;padding:14px 14px 28px;clip-path:polygon(0 0,100% 0,100% 100%,50% 82%,0 100%);display:flex;flex-direction:column;align-items:center;gap:2px}
+.cover .lg svg{width:54px;height:54px}
+.brand{font-weight:900;font-size:20px;font-family:Arial,sans-serif}
+.brand i{font-style:normal;color:#244aa5}.brand u{text-decoration:none;color:#f39c12}
+.cover .tf1{font-weight:900;letter-spacing:2px;color:#13321a;margin-top:110px;font-size:clamp(13px,3vw,18px)}
+.big{font-family:'Lilita One';color:#fff;-webkit-text-stroke:3px #111;paint-order:stroke fill;text-shadow:4px 4px 0 #111;line-height:1}
+.cover .b1{font-size:clamp(40px,11vw,86px);margin-top:14px}
+.cover .b2{font-size:clamp(70px,22vw,170px);letter-spacing:6px}
+.cover .b3{font-size:clamp(80px,22vw,170px)}
+.badge{position:absolute;left:clamp(10px,6vw,60px);top:52%;width:clamp(110px,26vw,170px);aspect-ratio:1;border-radius:50%;background:#f39a2b;display:flex;align-items:center;justify-content:center;transform:rotate(14deg);box-shadow:0 0 0 8px #f39a2b,0 0 0 11px rgba(255,255,255,.0)}
+.badge span{border:3px solid #fff;border-radius:50%;width:84%;height:84%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:clamp(11px,2.4vw,16px);line-height:1.15;padding:6px}
+.cover .topics{margin-top:24px;font-weight:900;color:#1847b5;font-size:clamp(17px,4vw,28px);letter-spacing:1px;line-height:1.35}
+.cover .feat{margin-top:18px;font-weight:900;color:#13321a;font-size:clamp(12px,2.6vw,16px);line-height:1.5}
+.cover .feat div{margin:6px 0}
+.back{background:#2fa33a;color:#fff;min-height:88vh;padding:22px clamp(16px,5vw,44px) 30px;position:relative}
+.back .about{background:#f7faf8;color:#2b3340;border:6px solid #1d4d22;border-radius:22px;padding:22px;text-align:center;margin:24px 0}
+.back .wi{display:flex;flex-direction:column;align-items:center;gap:8px;margin:18px 0}
+.back .wi span{font-weight:900;padding:6px 26px;border-radius:30px;letter-spacing:1px}
+.stats{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin:18px 0}
+.stats div{width:96px;height:96px;border-radius:50%;background:#f7faf8;border:6px solid #1d4d22;color:#1d4d22;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.stats b{font-family:'Lilita One';font-size:30px;line-height:1}
+.stats small{font-size:10px;font-weight:900}
+.ticks{font-weight:900;color:#13321a;font-size:14px}
+.ticks div:before{content:"✔";background:#fff;color:#2fa33a;border-radius:50%;display:inline-flex;width:20px;height:20px;align-items:center;justify-content:center;margin-right:8px;font-size:12px}
+/* info table */
+.itab{width:100%;border-collapse:collapse;font-weight:700}
+.itab td{padding:6px 4px;border-bottom:1px solid #b9e2bf;vertical-align:top}
+.itab td:first-child{color:var(--cd);width:38%}
+.ph{background:#fff200;padding:0 3px}
+.copy{border:2px solid var(--c);background:#ebf6ec;padding:10px 14px;margin-top:14px;font-weight:700;text-align:justify}
+.ind p{text-indent:28px;text-align:justify}
+/* chapter cover */
+.ccov{padding:18px clamp(14px,4vw,34px) 20px;background:linear-gradient(#fff,#fff) padding-box}
+.ctitle{font-family:'Lilita One';font-weight:400;text-align:center;color:var(--cd);font-size:clamp(34px,9vw,64px);line-height:1.05;margin:6px 0 14px;background:var(--c);background:linear-gradient(transparent 55%,var(--c) 55%,var(--c) 88%,transparent 88%)}
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cbox{border:5px solid var(--c);border-radius:22px;padding:12px 16px;background:#fff}
+.cbox h3{margin:-28px auto 8px;width:max-content;background:#fff;border:3px solid var(--c);border-radius:14px;padding:2px 16px;font-family:'Lilita One';font-weight:400;letter-spacing:2px;color:var(--cd);font-size:19px;text-transform:uppercase}
+.cbox.obj{grid-column:1/-1;margin-top:16px}
+.cbox.obj ol{margin:0;padding-left:20px;font-weight:900;color:var(--cd);text-transform:uppercase;font-size:14px}
+.cbox.obj li{margin:5px 0}
+.kwc{display:flex;flex-direction:column;align-items:center;font-weight:900;letter-spacing:2px;color:#222;font-size:17px}
+.infl{text-align:center;font-weight:900;color:var(--cd);line-height:1.5}
+.cbox.his{grid-column:2/3;grid-row:span 2}
+.cbox.his p,.cbox.inv p{font-weight:800;text-align:center;letter-spacing:.5px}
+.cbox.inv p{text-transform:uppercase;font-size:14px}
+.cg .cbox:not(.obj){margin-top:16px}
+/* mathematician */
+.mm h2{font-family:'Lilita One';font-weight:400;color:var(--cd);text-align:center;font-size:clamp(30px,7vw,42px);margin:0}
+.mm .yrs{text-align:center;font-weight:900;color:var(--c);margin-bottom:12px}
+.mmtop{display:block}
+.sym{border:3px dashed var(--c);border-radius:10px;background:var(--c2);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px;text-align:center;font-weight:800;font-size:13px;color:var(--cd)}
+.sym b{font-size:46px;line-height:1.05;font-family:Georgia,serif}
+.facts{border:3px solid var(--c);background:var(--c2);padding:10px 14px;font-weight:700}
+.facts b{color:var(--cd)}
+.mini{display:inline-block;border:3px solid var(--c);border-radius:14px;padding:1px 16px;font-weight:900;letter-spacing:2px;color:var(--cd);font-size:13px;margin:14px 0 4px;outline:1px dashed var(--c);outline-offset:-6px}
+.mm ul{padding-left:0;list-style:none;font-weight:700}
+.mm li{margin:6px 0;padding-left:22px;position:relative}
+.mm li:before{content:"";position:absolute;left:2px;top:.5em;width:11px;height:11px;border-radius:50%;background:var(--c)}
+.mm li em{font-style:normal;color:var(--c);font-weight:900}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;font-weight:700}
+.two>div{padding:10px 12px}
+.two>div:first-child{border:3px solid var(--c);background:var(--c2)}
+.two>div:last-child{border:2.5px dashed var(--c)}
+.two h5{margin:0 0 4px;color:var(--cd);font-size:15px}
+/* keywords */
+.sub{text-align:center;font-style:italic;font-weight:800;color:#555}
+.kws{border:3px solid var(--c)}
+.kwr{display:grid;grid-template-columns:110px 1fr;border-bottom:3px solid var(--c)}
+.kwr:last-child{border-bottom:0}
+.kwi{background:var(--c2);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:900;color:var(--cd);border-right:3px solid var(--c);text-align:center;padding:8px;line-height:1.2}
+.kwr>div:last-child{padding:8px 12px;font-weight:700}
+.kwr h4{margin:0;color:var(--cd);font-size:18px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.kwr h4 i{font-weight:600;color:#888;font-size:14px}
+.say{border:0;background:var(--c2);border-radius:50%;width:30px;height:30px;font-size:14px}
+.kwr p{margin:3px 0}
+.inb b{color:var(--c)}
+.inb i{color:#333}
+/* contents */
+.cont a{display:flex;gap:6px;text-decoration:none;color:var(--cd);font-weight:800;padding:3px 0}
+.cont a span{flex:1;border-bottom:2px dotted #9cb;margin-bottom:6px}
+.cont a.l1{padding-left:28px;color:#2b3340;font-weight:700}
+.cont a.l2{padding-left:48px;color:#3b4352;font-weight:600}
+.cont a.ch{margin-top:10px;background:var(--c2);border-left:6px solid var(--c);padding-left:8px}
+.ak details{border:2px solid var(--c);border-radius:12px;margin:10px 0;padding:6px 12px}
+.ak summary{font-weight:900;color:var(--cd);cursor:pointer;font-size:17px}
+.ak h6{margin:10px 0 4px;font-size:15px;color:var(--cd)}
+.ak .row{display:flex;flex-wrap:wrap;gap:4px 16px;font-weight:700}
+.ak .row span b{color:var(--c)}
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:15;display:flex;justify-content:center;gap:10px;padding:10px;background:linear-gradient(transparent,rgba(232,238,243,.95) 35%)}
+.nav button{border:0;border-radius:30px;padding:11px 22px;font-weight:900;background:#1d6b25;color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+.nav button:disabled{opacity:.35}
+.nav .mid{background:#fff;color:var(--ink)}
+@media(max-width:600px){
+ .cg{grid-template-columns:1fr}.cbox.his{grid-column:auto;grid-row:auto}
+ .mmtop{grid-template-columns:1fr}.two{grid-template-columns:1fr}
+ .kwr{grid-template-columns:76px 1fr}.kwi{font-size:20px}
+ .items{grid-template-columns:1fr 1fr;gap:4px 12px}
+ .it .ex{white-space:normal}
+ input.g{width:64px}
+ .cover .tf1{margin-top:120px}
+ .badge{top:43%;width:96px;left:14px}.badge span{font-size:10px}
+ .grid button{padding:6px 0;font-size:14px}
+}
+@media(max-width:400px){.items{grid-template-columns:1fr}}
+
+/* exercise tabs, hints, solutions */
+.itx{display:inline-flex;gap:5px;flex-wrap:wrap}
+.tb{border:1.5px solid var(--c);background:#fff;color:var(--cd);border-radius:14px;padding:2px 9px;font-weight:800;font-size:12.5px;line-height:1.5}
+.tb.tbh{border-color:#f0b400;color:#8a5a00;background:#fff9db}
+.tb.act{background:var(--c);color:#fff}.tb.tbh.act{background:#ffd43b;color:#5c3d00}
+.it.open{grid-column:1/-1}
+.pan{flex-basis:100%;width:100%}
+.pan .box{margin:6px 0 2px;font-weight:600;font-size:15.5px;line-height:1.75}
+.stp{display:inline-block;background:var(--c);color:#fff;border-radius:6px;padding:0 8px;font-weight:900;font-size:13px}
+.gridsol{margin-top:6px}
+/* resume popover */
+#rpop{position:fixed;z-index:70;width:230px;background:#fff;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.25);padding:10px;display:flex;flex-direction:column;gap:6px}
+#rpop[hidden]{display:none}
+#rpop .rpt{font-size:13px;font-weight:700;color:#555;text-align:center}
+#rpop button{border:0;border-radius:10px;padding:8px;font-weight:900;font-size:15px}
+#rpop button[data-r=c]{background:#1d6b25;color:#fff}
+#rpop button[data-r=s]{background:#eef2f6;color:#1d2433}
+.hasres:not(.bsay){position:relative}
+.hasres::after{content:"";position:absolute;top:-3px;right:-3px;width:11px;height:11px;border-radius:50%;background:#f76707;border:2px solid #fff}
+/* story player */
+.watch{display:block;margin:4px auto 12px;border:0;background:var(--c);color:#fff;font-weight:900;border-radius:24px;padding:9px 22px;font-size:15px;box-shadow:0 4px 12px rgba(0,0,0,.18)}
+#vid{position:fixed;inset:0;z-index:60;background:rgba(10,20,30,.75);display:flex;align-items:center;justify-content:center;padding:10px}
+#vid[hidden]{display:none}
+.vbox{background:#fff;border-radius:18px;width:min(780px,100%);overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.45)}
+.vtop{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 12px 9px 16px;background:var(--vc,#1d6b25);color:#fff;font-family:'Lilita One',sans-serif;font-size:18px}
+.vtop button{border:0;background:rgba(255,255,255,.22);color:#fff;border-radius:50%;width:34px;height:34px;flex:none}
+.stage{aspect-ratio:16/9;background:#111;position:relative;overflow:hidden}
+.stage svg{width:100%;height:100%;display:block}
+.vcap{margin:0;padding:10px 16px;font-weight:800;font-size:16px;min-height:66px;line-height:1.45}
+.vbar{display:flex;align-items:center;gap:8px;padding:0 12px 12px}
+.vbar button{border:0;background:#eef2f6;border-radius:10px;padding:7px 13px;font-size:16px}
+.vbar #vplay{background:var(--vc,#1d6b25);color:#fff}
+.vdots{flex:1;display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.vdots i{width:10px;height:10px;border-radius:50%;background:#cfd6de;cursor:pointer;transition:transform .2s}
+.vdots i.on{background:var(--vc,#1d6b25);transform:scale(1.35)}
+.stage svg [class^="a-"]{transform-box:fill-box}
+.a-fi{animation:vfi .9s ease both;animation-delay:var(--d,0s)}
+.a-pop{animation:vpop .75s cubic-bezier(.3,1.5,.5,1) both;transform-origin:center;animation-delay:var(--d,0s)}
+.a-flt{animation:vflt 2.6s ease-in-out infinite;animation-delay:var(--d,0s)}
+.a-spin{animation:vspin var(--t,6s) linear infinite;transform-origin:center}
+.a-draw{stroke-dasharray:var(--len,700);stroke-dashoffset:var(--len,700);animation:draw var(--t,2.5s) ease forwards;animation-delay:var(--d,0s)}
+.a-mv{animation:vmv var(--t,6s) ease-in-out both;animation-delay:var(--d,0s)}
+.a-tw{animation:vtw var(--t,2s) ease-in-out infinite;animation-delay:var(--d,0s)}
+.a-snow{animation:vsnow var(--t,7s) linear infinite;animation-delay:var(--d,0s)}
+.a-shake{animation:vshake .7s ease-in-out infinite;transform-origin:bottom center;animation-delay:var(--d,0s)}
+.a-grow{animation:vgrow 1.2s ease both;transform-origin:top center;animation-delay:var(--d,0s)}
+.a-wipe{animation:vwipe var(--t,2.5s) linear both;animation-delay:var(--d,0s)}
+.a-rise{animation:vrise 4s ease-out both;animation-delay:var(--d,0s)}
+.a-fly{animation:vfly 7.5s ease-in-out both;animation-delay:var(--d,0s)}
+.a-flap{animation:vflap .12s linear infinite alternate;transform-origin:center}
+.a-glow{animation:vglow 1.6s ease-in-out infinite alternate;animation-delay:var(--d,0s)}
+@keyframes vfi{from{opacity:0}to{opacity:1}}
+@keyframes vpop{0%{opacity:0;transform:scale(.2)}70%{opacity:1;transform:scale(1.12)}100%{opacity:1;transform:scale(1)}}
+@keyframes vflt{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@keyframes vspin{to{transform:rotate(360deg)}}
+@keyframes vmv{from{transform:translateX(var(--fx,-300px))}to{transform:translateX(var(--tx,0px))}}
+@keyframes vtw{0%,100%{opacity:.25}50%{opacity:1}}
+@keyframes vsnow{from{transform:translateY(-20px)}to{transform:translateY(390px)}}
+@keyframes vshake{0%,100%{transform:rotate(0)}25%{transform:rotate(-7deg)}75%{transform:rotate(7deg)}}
+@keyframes vgrow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes vwipe{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+@keyframes vrise{from{transform:translateY(70px)}to{transform:translateY(0)}}
+@keyframes vfly{0%,8%{transform:translate(0,0)}24%,33%{transform:translate(120px,-40px)}52%,60%{transform:translate(240px,40px)}80%,100%{transform:translate(80px,120px)}}
+@keyframes vflap{from{transform:scaleY(1)}to{transform:scaleY(.35)}}
+@keyframes vglow{from{opacity:.55}to{opacity:1}}
+.stage.paused *{animation-play-state:paused!important}
+@media print{.top,.nav,#drawer,#scrim,.qbar{display:none!important}.page{display:block!important;box-shadow:none;break-after:page;animation:none!important}.book{padding:0}}
+</style>
+</head>
+<body>
+<canvas id="bgfx" aria-hidden="true"></canvas>
+<header class="top">
+  <button class="ib" id="menuBtn" aria-label="Contents">☰</button>
+  <div class="ttl" id="ttl"></div>
+  <span id="pg"></span>
+</header>
+<div id="scrim"></div>
+<aside id="drawer" aria-label="Contents">
+  <h3>Contents</h3>
+  <div id="score"></div>
+  <label class="fxsw"><input type="checkbox" id="fxon" checked> ✨ Animated background</label>
+  <label class="spd">🔊 Speed <input type="range" id="rate" min="0.6" max="1.3" step="0.05" value="0.9"></label>
+  <nav class="tocl" id="toc"></nav>
+</aside>
+<main class="book" id="book"></main>
+<div id="vid" hidden><div class="vbox" role="dialog" aria-label="Story"><div class="vtop"><b id="vtitle"></b><button id="vx" aria-label="Close">✕</button></div><div class="stage" id="vstage"></div><p class="vcap" id="vcap"></p><div class="vbar"><button id="vprev" aria-label="Previous scene">⏮</button><button id="vplay" aria-label="Play or pause">⏸</button><button id="vnext" aria-label="Next scene">⏭</button><div class="vdots" id="vdots"></div><button id="vmute" aria-label="Sound on or off">🔊</button></div></div></div>
+<div class="nav">
+  <button id="prev">‹ Prev</button>
+  <button id="home" class="mid">Contents</button>
+  <button id="next">Next ›</button>
+</div>
+
+<script>
+/* ---------- helpers ---------- */
+const LOGO='<svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="15" fill="#2f6fe0"/><path d="M21 22l11-9 11 9" stroke="#f6a623" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M11 27c7-2 15-1 20 3v22c-5-4-13-5-20-3z M53 27c-7-2-15-1-20 3v22c5-4 13-5 20-3z" fill="#fff"/></svg>';
+const BRAND='<span class="brand"><i>Edu</i><u>Prep</u></span>';
+let KC=0;const K=()=>'k'+(KC++);
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+const r=x=>`<span class="rad"><span class="rs" aria-hidden="true"></span><span class="ri">${x}</span></span>`;
+const fr=(a,b)=>`<span class="fr"><span>${a}</span><span>${b}</span></span>`;
+const E=(t,lab='Example:')=>`<div class="box exm"><b>${lab}</b> ${t}</div>`;
+const I=t=>`<div class="box inf"><b>INFO:</b> ${t}</div>`;
+const R=t=>`<div class="box rul"><b>RULE:</b> ${t}</div>`;
+const W=(t,lab='CAUTION:')=>`<div class="box wrn"><b>${lab}</b> ${t}</div>`;
+const L='abcdefghijklmnopqrstuvwxyz';
+const inp=(a,show,cls='')=>`<input class="g ${cls}" data-ans="${esc(a)}" data-show="${esc(show??String(a).split('|')[0])}" data-k="${K()}" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="answer">`;
+const it=(l,e,a,show)=>`<div class="it"><b>${l}.</b><span class="ex">${e} =</span>${inp(a,show)}</div>`;
+const items=(arr,num=0)=>`<div class="items">${arr.map((x,i)=>it(num?num+i:L[i],x[0],x[1],x[2])).join('')}</div>`;
+const Q=(ex,n,t,inner)=>`<div class="q" data-ex="${esc(ex)}" data-n="${n}">${t?`<h4>${n}. ${t}</h4>`:''}${inner}<div class="qbar"><button class="chk">✔ Check</button><button class="shw">👁 Show answers</button><button class="rst" title="Clear">↺</button><span class="sc"></span></div></div>`;
+const tf=(l,t,a)=>`<div class="it tfi"><b>${l}.</b><span class="tx">${t}</span><span class="tf g" data-ans="${a}" data-show="${a==='T'?'TRUE':'FALSE'}" data-k="${K()}"><button data-v="T">TRUE</button><button data-v="F">FALSE</button></span></div>`;
+const SETS=[['N','N'],['W','W'],['Z','Z'],['Z+','Z<sup>+</sup>'],['Z-','Z<sup>–</sup>']];
+const st=(l,num,a)=>`<div class="it"><b>${l}.</b><span class="ex" style="min-width:42px">${num}</span><span class="sets g" data-ans="${a}" data-show="${a.replace(/Z\+/g,'Z⁺').replace(/Z-/g,'Z⁻').split(',').join(', ')}" data-k="${K()}">${SETS.map(s=>`<button data-v="${s[0]}">${s[1]}</button>`).join('')}</span></div>`;
+const grid=(nums,sq)=>`<div class="grid g" data-ans="${sq.join(',')}" data-show="${sq.join(', ')}" data-k="${K()}">${nums.map(n=>`<button data-v="${n}">${n}</button>`).join('')}</div>`;
+
+function nl(o={}){
+  const min=o.min??-7,max=o.max??7,Wd=380,pad=18,s0=(Wd-2*pad)/(max-min),x=v=>+(pad+(v-min)*s0).toFixed(1),y=44;
+  let s=`<svg class="nl${o.hide?' hid':''}" viewBox="0 0 ${Wd} 64" role="img" aria-label="number line">`;
+  s+=`<line x1="6" y1="${y}" x2="${Wd-6}" y2="${y}" stroke="currentColor" stroke-width="1.5"/><path d="M5 ${y}l9 -4.5v9z M${Wd-5} ${y}l-9 -4.5v9z" fill="currentColor"/>`;
+  for(let v=min;v<=max;v++){const c=v<0?'#2563c9':v>0?'#d42020':'#222';s+=`<line x1="${x(v)}" y1="${y-5}" x2="${x(v)}" y2="${y+5}" stroke="currentColor"/><text x="${x(v)}" y="${y+18}" fill="${c}" font-size="${max-min>14?10:11}" font-family="Nunito,sans-serif" text-anchor="middle">${v<0?'–'+(-v):v}</text>`}
+  const groups=o.groups||(o.from!=null?[{from:o.from,to:o.to}]:[]);let d=0;
+  groups.forEach(g=>{const dir=g.to>g.from?1:-1,col=g.c||(dir>0?'#d42020':'#2563c9');
+    for(let v=g.from;v!==g.to;v+=dir){const a=x(v),b=x(v+dir),m=(a+b)/2;s+=`<path class="arc" style="animation-delay:${(d++*0.17).toFixed(2)}s" d="M${a} ${y} Q${m} ${y-28} ${b} ${y}" fill="none" stroke="${col}" stroke-width="1.7"/>`}
+    if(!o.noDots)s+=`<circle cx="${x(g.from)}" cy="${y}" r="4" fill="#fff" stroke="currentColor" stroke-width="1.5"/><circle class="dot1" style="animation-delay:${(d*0.17).toFixed(2)}s" cx="${x(g.to)}" cy="${y}" r="4.6" fill="currentColor"/>`;
+  });
+  if(o.dot!=null)s+=`<circle cx="${x(o.dot)}" cy="${y}" r="4.6" fill="currentColor"/>`;
+  return s+'</svg>';
+}
+const nli=(l,e,from,to)=>`<div class="it nlit"><b>${l}.</b><span class="ex">${e} =</span>${inp(to)}<button class="drawbtn">Show on line</button>${nl({from,to,hide:true})}</div>`;
+
+function chCover(title,obj,kw,info,hist,inv){
+  return `<div class="ccov"><h1 class="ctitle">${title}</h1><div class="cg">
+  <section class="cbox obj"><h3>Objectives</h3><ol>${obj.map(o=>`<li>${o}</li>`).join('')}</ol></section>
+  <section class="cbox"><h3>Key words</h3><div class="kwc">${kw.map(k=>`<span>${k}</span>`).join('')}</div></section>
+  <section class="cbox his"><h3>History</h3><p>${hist}</p></section>
+  <section class="cbox"><h3>Information</h3><div class="infl">${info.join('<br>')}<br>With Answer Keys</div></section>
+  <section class="cbox inv"><h3>Investigate</h3><p>${inv}</p></section></div></div>`;
+}
+function mm(o){
+  return `<span class="pill">Meet the mathematician</span><div class="mm"><h2>${o.name}</h2><div class="yrs">${o.yrs}</div><button class="watch" data-story="${o.key}">🎬 Watch the story</button>
+  <div class="mmtop"><div><span class="mini">QUICK FACTS</span><div class="facts">${o.facts.map(f=>`<div><b>${f[0]}:</b> ${f[1]}</div>`).join('')}</div></div></div>
+  <span class="mini">LIFE</span><p>${o.life}</p>
+  <span class="mini">GREAT WORKS</span><ul>${o.works.map(w=>`<li>${w}</li>`).join('')}</ul>
+  <div class="two"><div><h5>LINK TO THIS CHAPTER</h5>${o.link}</div><div><h5>DID YOU KNOW?</h5>${o.dyk}</div></div></div>`;
+}
+function kws(list){
+  return `<span class="pill">Key words</span><p class="sub">Illustrated meanings of the key words on the chapter cover</p><div class="kws">${list.map(([w,p,ic,d,q])=>`<div class="kwr"><div class="kwi">${ic}</div><div><h4>${w} <i>${p}</i><button class="say" data-say="${esc(w+'. '+d.replace(/<[^>]+>/g,''))}" aria-label="Listen">🔊</button></h4><p>${d}</p><p class="inb"><b>In this book:</b> <i>“${q}”</i></p></div></div>`).join('')}</div>`;
+}
+
+/* ---------- pages ---------- */
+const TH={0:['#2e9e3a','#e9f6ea','#1d6b25','ELEMENTARY MATH 1','EDUPREP'],1:['#18b257','#e6f8ee','#0f6b35','1. NUMBERS','ELEMENTARY MATH 1'],2:['#2aa6ee','#e6f4fd','#1150b0','2. 4 FUNDAMENTAL OPERATIONS','ELEMENTARY MATH 1'],3:['#f5a23a','#fff3e2','#b3220f','3. ORDER OF OPERATIONS','ELEMENTARY MATH 1'],4:['#2e9e3a','#e9f6ea','#1d6b25','ANSWER KEY','ELEMENTARY MATH 1']};
+const P=[];
+const add=(ch,html,toc,lvl=0,full=false)=>P.push({ch,html,toc,lvl,full});
+
+/* Cover */
+add(0,`<div class="cover"><div class="lg">${LOGO}${BRAND}</div>
+<div class="tf1">‘TEACHER AND STUDENT FRIENDLY’</div>
+<div class="big b1">ELEMENTARY</div><div class="big b2">MATH</div><div class="big b3">1</div>
+<div class="badge"><span>ILLUSTRATED<br>AND EXPLANATORY<br>DICTIONARY</span></div>
+<div class="topics">NUMBERS<br>4 FUNDAMENTAL OPERATIONS<br>ORDER OF OPERATIONS<br>EQUATIONS</div>
+<div class="feat"><div>THE MOST DETAILED AND UNDERSTANDABLE EXPLANATION</div><div>THE MOST NUMBER OF EXAMPLES AND EXERCISES</div><div>ADDITIONAL SCHOOL MATERIAL TO IMPROVE CALCULATION ABILITY</div><div>SUITABLE FOR GRADE 5 AND ABOVE</div></div></div>`,'Cover',0,true);
+
+/* Book information */
+add(0,`<div style="text-align:center">${LOGO.replace('<svg','<svg style="width:60px;height:60px"')}<br>${BRAND}</div>
+<h2 class="h1" style="border:0;margin-bottom:0">ELEMENTARY MATH 1</h2><p class="ctr" style="color:#666">Numbers · 4 Fundamental Operations · Order of Operations</p>
+<span class="pill">Book information</span>
+<table class="itab"><tr><td>Title</td><td>Elementary Math 1</td></tr><tr><td>Topics</td><td>Numbers · 4 Fundamental Operations · Order of Operations</td></tr><tr><td>Series</td><td>Elementary Mathematics</td></tr><tr><td>Level</td><td>Grade 5 and above</td></tr><tr><td>Language</td><td>English</td></tr><tr><td>Author</td><td><span class="ph">[Author name]</span></td></tr><tr><td>Editor</td><td><span class="ph">[Editor name]</span></td></tr><tr><td>Cover &amp; page design</td><td><span class="ph">[Designer name]</span></td></tr><tr><td>Publisher</td><td>EduPrep</td></tr><tr><td>Edition</td><td>1st edition, <span class="ph">[year]</span></td></tr><tr><td>ISBN</td><td><span class="ph">[978-…-…-…-…]</span></td></tr><tr><td>Printing &amp; binding</td><td><span class="ph">[Printing house, city]</span></td></tr><tr><td>Contact</td><td><span class="ph">[Address · phone · e-mail · website]</span></td></tr></table>
+<div class="copy">© <span class="ph">[year]</span> EduPrep. All rights reserved. No part of this book may be reproduced, stored in a retrieval system or transmitted in any form or by any means – electronic, mechanical, photocopying, recording or otherwise – without the prior written permission of the publisher. Short quotations for teaching or review purposes are permitted with acknowledgement of the source.</div>
+<p class="ctr" style="color:#888">Printed in <span class="ph">[country]</span></p>`,'Book Information');
+
+/* Preface */
+add(0,`<span class="pill">Preface</span><div class="ind"><p style="text-indent:0"><b class="t">Dear students, dear teachers,</b></p>
+<p>Mathematics is a language, and like every language it is learned step by step. Elementary Math 1 was written to make these first steps clear, enjoyable and strong. It is the first book of the Elementary Mathematics series and it is suitable for grade 5 and above.</p>
+<p>The book has three chapters. In Numbers you will meet the number sets N, W and Z and learn how numbers are classified. In 4 Fundamental Operations you will add, subtract, multiply and divide positive and negative numbers and show these operations on the number line. In Order of Operations you will learn the BEDMAS rule and solve expressions with brackets, exponentials and radicals without confusion.</p>
+<p>Every chapter follows the same friendly plan. The chapter cover shows the objectives, the key words, the information about the chapter, a short history note and a small research task. The next page introduces a famous mathematician whose work is connected to the topic. Then come clear definitions, INFO notes, RULE boxes and many solved examples, ordered from the easiest to the hardest. All exercises of a chapter follow its lessons, and an illustrated and explanatory dictionary explains the key words of the cover, so that students learn the mathematical language together with the mathematics. The answer keys at the end of the book help you to check your own work.</p>
+<p>In total the book contains 100 solved examples, 14 extra information notes, 8 exercises, 97 questions and 234 options, all with answer keys. They are designed both for classroom teaching and for additional school practice to improve calculation ability.</p></div>
+<p><b class="t"><i>We wish you success and joy on your mathematical journey.</i></b></p><p style="text-align:right"><b class="t">The Author</b> · <span class="ph">[place]</span>, <span class="ph">[year]</span></p>
+${I('In this online edition every exercise can be checked instantly: write your answer, then press <b>✔ Check</b>.')}`,'Preface');
+
+/* Tips */
+add(0,`<span class="pill">Tips for learning mathematics</span><div class="ind">
+<p style="text-indent:0">Learning mathematics is a lot like setting out on a journey, or starting a brand-new game. You can think of each chapter in this book as a level that gets a little harder than the last — except this game is played with numbers, shapes and symbols. Sometimes new symbols join the game (like √, π or ∞); sometimes numbers shrink and climb up to sit as an exponent on top of another number; sometimes letters even take the place of numbers. At first this can feel confusing, just like learning the rules of a brand-new game — but every new rule carries you to the next level.</p>
+<p>Here's what matters most: while you're playing, your numerical thinking, your perspective on everyday situations, and even your reaction time are all quietly growing. You're learning to try different paths toward a solution, to stay patient, and to move forward step by logical step. You might not notice the effect on your everyday life right away — maybe only years from now, while weighing a decision quickly, planning a budget, or breaking a complicated problem into smaller pieces, will you realize how much this skill has been helping you all along. But its impact is certain to be enormous, and it lasts a lifetime.</p>
+<p>The single biggest secret to learning mathematics is actually very simple: <b class="t">never give up.</b> Don't hesitate to ask your teacher about even the smallest detail you don't understand, no matter how unimportant it may seem — because a tiny gap today can turn into a big obstacle at the next level.</p>
+<p>Remember, every mathematician was once learning these very terms for the first time, just like you. <b class="t">Now it's your turn!</b></p></div>`,'Tips for Learning Mathematics');
+
+/* Contents (filled later) */
+add(0,`<span class="pill">Contents</span><div class="cont" id="contents"></div>`,null);
+
+/* ===== CHAPTER 1 ===== */
+add(1,chCover('1. NUMBERS',
+ ['What is the natural numbers, whole numbers and what is the difference between them.','What is the integers and the types of the integers','How the number sets can be represented','How the number can be classified according their belonging sets'],
+ ['Infinity','Capital letter','Decreasing','Increasing','Integer','Positive','Negative'],
+ ['5 Examples','10 Extra Information','1 Exercise','3 Questions','22 Options'],
+ 'The first known system with place value was the Mesopotamian base 60 system (c. 3400 BC) and the earliest known base 10 system dates to 3100 BC in Egypt.',
+ 'What is the tally table and what is the role of it in the numbers history?'),'CHAPTER 1: NUMBERS',0,true);
+
+add(1,mm({key:'cantor',name:'GEORG CANTOR',yrs:'1845 – 1918 · The man who counted infinity',sym:'<b>ℵ<sub style="font-size:.5em">0</sub></b>{1, 2, 3, 4, …}<br>∞ = ∞ ?<br><small>aleph-null</small>',
+ facts:[['Born','1845, Saint Petersburg (Russia)'],['Died','1918, Halle (Germany)'],['Field','Set theory'],['Famous for','Comparing infinite sets']],
+ life:'Cantor moved from Russia to Germany with his family when he was eleven. He studied mathematics in Zurich and Berlin and taught at the University of Halle for the rest of his life. Many mathematicians rejected his new ideas about infinity, but Cantor never gave up.',
+ works:['Created <em>set theory</em> – the language of sets such as N, W and Z.','Proved that <em>some infinities are bigger than others</em> (1874).','Showed that the natural numbers and the integers are the <em>same size of infinity</em>.'],
+ link:'Sets like N = {1, 2, 3, …} in Chapter 1 go up to infinity. Cantor was the first to study them.',
+ dyk:'Hilbert said: “No one shall expel us from the paradise that Cantor has created.”'}),'Meet the Mathematician: Georg Cantor',1);
+
+add(1,`<h2 class="h1">1. NUMBER SETS</h2>
+<p>We use the numbers in life very frequently while counting the money, telling the temperature of weather or the time.</p>
+<p>Numbers have been classified in different number sets. We will look through these number sets which are used the most while calculating 4 fundamental operations.</p>
+<p><b class="t">Natural Numbers:</b> Starting from 1 up to positive infinity.</p><p class="ctr">{1, 2, 3, 4, ...}</p>
+<p>The capital “N” represents natural numbers set.</p><p class="ctr">N = {1, 2, 3, 4, ...}</p>
+${E('51, 173, 4198, 35736419 are natural numbers.')}
+${I('The smallest natural number is 1. The biggest natural number is undefined because natural numbers go to the positive infinity.')}
+${I('The natural numbers are also called as a counting number.')}
+<p><b class="t">Whole Numbers:</b> Starting from 0 up to positive infinity.</p><p class="ctr">{0, 1, 2, 3, 4, ...}</p>
+<p>The capital “W” represents whole numbers set.</p><p class="ctr">W = {0, 1, 2, 3, 4, ...}</p>
+${E('0, 77, 819, 9714, 54690114 are whole numbers. In this example all the numbers are also natural numbers except 0.')}
+${I('The smallest whole number is 0.')}
+${I('The difference between whole numbers and natural numbers in terms of a number is 0. 0 is a whole number but it is not a natural number.')}`,'1. Number Sets',1);
+
+add(1,`<p><b class="t">Integers:</b> Starting from negative infinity up to positive infinity.</p><p class="ctr">{..., –3, –2, –1, 0, 1, 2, 3, ...}</p>
+<p>The capital “Z” represents integers.</p><p class="ctr">Z = {..., –3, –2, –1, 0, 1, 2, 3, ...}</p>
+${E('–9174, –809, –74, 0, 41, 708, 1198 are integers.')}
+${I('We can’t talk about the smallest or the biggest integer because it starts from negative infinity up to positive infinity.')}
+<p>We can divide integers into positive and negative integers.</p>
+<p><b>Negative integers</b> are represented by “Z<sup>–</sup>” symbol. It starts from negative infinity up to –1.</p><p class="ctr">Z<sup>–</sup> = {..., –4, –3, –2, –1}</p>
+${E('–314, –210, –37, –14 are negative integers.')}
+${I('The biggest negative integer is –1.')}
+${I('Negative integers have “–” sign before numbers. It means if the value of number decreasing, the positive value of this number is increasing.')}
+${E('1 is smaller than 2 but in the negative integers –1 is bigger than –2.<br>–10 is bigger than –27.')}
+<p><b>Positive integers</b> are represented by “Z<sup>+</sup>” symbol. It starts from 1 up to positive infinity.</p><p class="ctr">Z<sup>+</sup> = {1, 2, 3, 4, ...}</p>
+${I('The smallest positive integer is 1.')}
+${I('0 is neither positive nor negative. 0 is a neutral.')}
+${I('There is not any difference between natural numbers and positive integers. Both number sets are starting from 1 up to positive infinity.')}
+<p>We will look through another number sets like rational numbers, irrational numbers and real numbers in another book.</p>
+<p>For the beginning, it is enough to learn. Don’t forget that you are going to improve your calculation ability.</p>`,null);
+
+const X1='Chapter 1 · Exercise 1';
+add(1,`<div class="exh">EXERCISE 1</div>
+${Q(X1,1,'TRUE or FALSE. Choose your answer.',[
+ ['Difference between natural numbers and whole numbers is 0.','T'],['The smallest whole number is 1.','F'],['The biggest integer is –1.','F'],['The positive integers are numbers which have “–” sign.','F'],['There are no any difference between natural numbers and positive integers.','T'],['The biggest negative integer is –1.','T'],['–7 is bigger than –19.','T'],['–11 is bigger than 71.','F'],['All the positive integers are also counting numbers.','T'],['0 is a whole number and also neutral.','T'],['Natural number are represented by “W”.','F']
+ ].map((x,i)=>tf(L[i],x[0],x[1])).join(''))}
+${Q(X1,2,'State each number’s number set given below.',`${E('5 &nbsp; → &nbsp; N, W, Z, Z<sup>+</sup>')}<p style="font-size:14px;color:#666">Tap every set the number belongs to.</p>${st('a','0','W,Z')}${st('b','–5','Z,Z-')}${st('c','71','N,W,Z,Z+')}${st('d','–88','Z,Z-')}`)}
+${Q(X1,3,'Fill in the blanks.',`
+<div class="it"><b>a.</b><span class="tx">0 is an integer and also ${inp('whole','whole','wide')} number.</span></div>
+<div class="it"><b>b.</b><span class="tx">Whole numbers are represented by capital ${inp('W')} .</span></div>
+<div class="it"><b>c.</b><span class="tx">The difference between positive integers and whole numbers is ${inp('0')} .</span></div>
+<div class="it"><b>d.</b><span class="tx">The biggest negative integer is ${inp('-1','–1')} .</span></div>
+<div class="it"><b>e.</b><span class="tx">Z<sup>+</sup> represents ${inp('positive integers|positive integer|natural numbers|counting numbers','positive integers','wide')} .</span></div>
+<div class="it"><b>f.</b><span class="tx">Integers are starting from ${inp('negative infinity|-infinity|minus infinity','negative infinity','wide')} up to ${inp('positive infinity|infinity|+infinity','positive infinity','wide')} .</span></div>
+<div class="it"><b>g.</b><span class="tx">Natural numbers are also called as a ${inp('counting number|counting numbers','counting numbers','wide')} .</span></div>`)}`,'Exercise 1',2);
+
+add(1,kws([
+ ['Infinity','noun','∞','Something that has no end. Numbers never stop: after every number there is a bigger one. Its symbol is ∞.','Natural Numbers: Starting from 1 up to positive infinity.'],
+ ['Capital letter','noun','N W Z<br><small style="font-size:13px">n w z</small>','A big letter such as N, W or Z (not n, w, z). In mathematics, capital letters are used as the names of number sets.','The capital “N” represents natural numbers set.'],
+ ['Classified','adjective','<small style="font-size:15px">5 → N<br>0 → W<br>–3 → Z</small>','Put into groups by kind. Numbers are put into groups called number sets.','Numbers have been classified in different number sets.'],
+ ['Represent','verb','N →<br><small style="font-size:12px">{1, 2, 3, …}</small>','To stand for something; to be its sign or name. N stands for the natural numbers.','The capital “N” represents natural numbers set.'],
+ ['Decreasing','adjective','📉<br><small style="font-size:12px">5 4 3 2 1</small>','Becoming smaller. On the number line, numbers decrease from right to left: 5, 4, 3, 2, 1 …','It means if the value of number decreasing, the positive value of this number is increasing.'],
+ ['Increasing','adjective','📈<br><small style="font-size:12px">1 2 3 4 5</small>','Becoming bigger. On the number line, numbers increase from left to right: 1, 2, 3, 4, 5 …','On the number line, numbers increase from left to right and numbers decrease from right to left.'],
+ ['Integer','noun','Z<br><small style="font-size:11px">no ½, no 0.5</small>','A number without fractions or decimals. It can be positive, negative or zero: Z = {…, –2, –1, 0, 1, 2, …}.','Example: –9174, –809, –74, 0, 41, 708, 1198 are integers.'],
+ ['Positive','adjective','<span style="color:#d42020">+</span><br><small style="font-size:12px">+5 °C</small>','Bigger than zero. Positive numbers are on the right side of 0 and can be written with a “+” sign or with no sign: 3 = +3.','INFO: The smallest positive integer is 1.'],
+ ['Neutral','adjective','⚖<br><small style="font-size:12px">not +, not –</small>','Not on either side. 0 is neither positive nor negative.','0 is neither positive nor negative. 0 is a neutral.'],
+ ['Negative','adjective','<span style="color:#2563c9">–</span><br><small style="font-size:12px">–5 °C</small>','Smaller than zero. Negative numbers are on the left side of 0 and always have a “–” sign: –1, –5, –20.','INFO: The biggest negative integer is –1.']
+]),'Key Words',1);
+
+/* ===== CHAPTER 2 ===== */
+add(2,chCover('2. 4 FUNDAMENTAL OPERATIONS',
+ ['Basic definitions','How to add and subtract positive and negative numbers in details','How the addition and subtraction operations can be shown on the number line','How to multiply and divide positive and negative numbers in details'],
+ ['Expression','Frequently','Imaginary numbers','Case','Bigger','Smaller','Step','Sign','Rule','Given below'],
+ ['67 Examples','2 Extra Information','1 Exercise','15 Questions','123 Options'],
+ '“+ and –” have been used by <u>Nicole D’Oresme</u> between 1356 and 1361.<br>“×” was used by <u>William Oughtred</u> in 1618.<br>“. and :” was used by <u>Gottfried Wilhelm Leibniz</u> in 1684.<br>“÷” was used by <u>Johann Rahn</u> in 1659.',
+ 'Investigate the biographies of mathematicians mentioned in history part.'),'CHAPTER 2: 4 FUNDAMENTAL OPERATIONS',0,true);
+
+add(2,mm({key:'brahma',name:'BRAHMAGUPTA',yrs:'598 – c. 668 · The rule-maker of zero and negative numbers',sym:'<b><span style="color:#d42020">+</span> O <span style="color:#2563c9">–</span></b>628 CE<br><small>debt × debt = fortune<br>(–)·(–) = (+)</small>',
+ facts:[['Born','598, India'],['Died','about 668, India'],['Field','Mathematics and astronomy'],['Famous book','Brāhmasphuṭasiddhānta (628)']],
+ life:'Brahmagupta was an Indian mathematician and astronomer who lived about 1,400 years ago. He was the head of the observatory at Ujjain, the centre of mathematics in India at that time. He wrote his great book in the form of a long poem when he was only 30.',
+ works:['One of the first to treat <em>zero as a number</em>.','Gave the <em>sign rules</em>: “a debt times a debt is a fortune” – our rule (–) . (–) = (+).','Found a formula for the <em>area of a four-sided shape</em> drawn inside a circle.'],
+ link:'The sign rules of Chapter 2, like (–) . (–) = (+), are more than 1,400 years old!',
+ dyk:'He said 0 ÷ 0 = 0. Today we know that division by zero is undefined.'}),'Meet the Mathematician: Brahmagupta',1);
+
+add(2,`<h2 class="h1">2. ‘4’ FUNDAMENTAL OPERATIONS</h2>
+<h3 class="h2">2.1. Basic Definitions before Operations</h3>
+<p><b class="t">DEFINITION 1 “Expression”:</b> 5 is a number, “+” is a sign, 13 is also a number, if we consider them separately. On the other hand, they form an <u>expression</u>.</p>
+<div class="diag"><div><b>5</b><small>number</small></div><div><b>+</b><small>sign</small></div><div><b>13</b><small>number</small></div></div><div class="underl">expression</div>
+<p>We will use “expression” word frequently in future.</p>
+<p><b class="t">DEFINITION 2 “addition, subtraction, multiplication, division”:</b> Operations get easier to calculate the values of expressions. We have 4 fundamental operations in mathematics.</p>
+<p>★ <b>Addition</b> operation is represented by “+” (plus) sign.</p><p>The pronunciation of this operation is “a number plus a number” mostly and we use also “a number add a number”.</p>
+${E('7 + 15 “seven plus fifteen” or “seven add fifteen”')}
+<p>★ <b>Subtraction</b> operation is represented by “–” (minus) sign.</p><p>The pronunciation of this operation is “a number minus a number” mostly and we use also “a number subtract a number”.</p>
+${E('19 – 8 “nineteen minus eight” or “nineteen subtract eight”')}
+<p>★ <b>Multiplication</b> operation is represented by two different signs which are “×” and “.”. Both signs represent multiplication operation.</p><p>The pronunciation of this operation is “a number times a number” mostly and we use also “a number multiplied by a number”.</p>
+${E('5 × 16 “five times sixteen” or “five multiplied by sixteen”')}${E('9 . 17 “nine times seventeen” or “nine multiplied by seventeen”')}
+<p>★ <b>Division</b> operation can also be represented by two different ways which are by using “÷” sign and by using fraction like this “${fr('number','number')}”.</p><p>The pronunciation of this operation is “a number divided by a number” for using “÷” sign or “a number over a number” by using fraction.</p>
+${E('18 ÷ 6 “eighteen divided by six”.')}${E(`${fr(72,9)} “Seventy-two over nine”.`)}
+<p><b class="t">DEFINITION 3 “Number Line”:</b> Number line is a line which all the numbers are shown on it except imaginary numbers.</p>
+${nl({})}
+<p>On the number line, numbers increase from left to right and numbers decrease from right to left.</p>
+<div class="cap"><span style="color:#d42020">Numbers increase to the right →</span></div>
+${nl({min:0,max:15,groups:[{from:8,to:12,c:'#d42020'},{from:6,to:2,c:'#2563c9'}],noDots:true})}
+<div class="cap"><span style="color:#2563c9">← Numbers decrease to the left</span></div>
+${I('0 is accepted as a starting point on number line. It divides positive numbers and negative numbers as well.')}
+<p><b class="t">DEFINITION 4 “Positive and negative numbers”:</b> Positive numbers are placed at right side of 0 on the number line. Negative numbers are placed at left side of 0 on the number line.</p>
+${nl({})}<div class="cap"><span style="color:#2563c9">Negative numbers</span><span style="color:#d42020">Positive numbers</span></div>
+${I('We write “–” sign before a number while we are showing the negative numbers.')}
+<p><b class="t">DEFINITION 5 “Consecutive signs”:</b> In the expression, if there are signs between numbers, these signs are called as a consecutive sign.</p>
+${E('7 + – 4, now “+” and “–” are consecutive signs.')}${E('–25 – + 19, now “–” and “+” are consecutive signs.')}
+<p>These are available to write mentioned below in place of consecutive signs;</p>
+<p class="ctr">“–” in place of “+ –”<br>“–” in place of “– +”<br>“+” in place of “– –”</p>
+${E('71 + – 64 is equal to 71 – 64. We can write “–” in place of “+ –”.')}${E('– 4 – – 18 is equal to – 4 + 18. We can write “+” in place of “– –”.')}`,'2. ‘4’ Fundamental Operations',1);
+P[P.length-1].sub=[['2.1. Basic Definitions before Operations',2]];
+
+add(2,`<h3 class="h2">2.2. Addition</h3><p>We will look through addition operation in 3 different cases.</p>
+<h4 class="h3">a. Addition with positive numbers</h4><p>We will add the numbers and find the answer.</p>
+${E('7 + 4 = 11 “7 plus 4 equals 11”')}${E('19 + 9 = 28 “19 plus 9 equals 28”')}${E('8 + 31 = 39 “8 plus 31 equals 39”')}
+<h4 class="h3">b. Addition with positive and negative numbers</h4>
+<p>★ If the positive number is bigger than negative number;</p>
+${E('5 + – 4<br>According to “definition 5”, we can write – in place of “+ –”.<br>5 + – 4 = 5 – 4 = 1')}
+${E('19 + – 7 = 19 – 7 = 12')}${E('37 + – 16 = 37 – 16 = 11')}
+${E('–14 + 21<br>We can change the places of numbers then we can write 21 – 14 in place of –14 + 21.<br>–14 + 21 = 21 – 14 = 7')}
+${E('–9 + 12 = 12 – 9 = 3')}${E('–71 + 84 = 84 – 71 = 13')}
+<p>★ If the negative number is bigger than positive number in terms of value;</p>
+${R('<br>Step 1; define the bigger number in terms of value.<br>Step 2; write the sign of the bigger number as a sign of the answer.<br>Step 3; subtract the smaller from the bigger.<br>Step 4; write the answer of step 3 after the sign of the answer.')}
+${E('11 + – 19<br>Step 1; define the bigger number in terms of value. 19 is bigger than 11.<br>Step 2; write the sign of the bigger number as a sign of the answer. The sign of the answer will be “–” because the sign of 19 is “–”.<br>Step 3; subtract the smaller from the bigger. 19 – 11 = 8<br>Step 4; write the answer of step 3 after the sign of the answer.<br>11 + – 19 = 11 – 19 = –8')}
+${E('24 + – 37<br>Step 1; 37 is bigger than 24<br>Step 2; the sign of the 37 is “–”.<br>Step 3; 37 – 24 = 13<br>Step 4; 24 + – 37 = 24 – 37 = –13')}
+${E('41 + – 52 = – 11')}${E('77 + – 84 = – 7')}
+${E('–44 + 37<br>Step 1; 44 is bigger than 37.<br>Step 2; the sign of 44 is “–”.<br>Step 3; 44 – 37 = 7<br>Step 4; –44 + 37 = –7.')}
+${E('–56 + 41 = –15')}${E('–79 + 48 = –31')}
+<h4 class="h3">c. Addition with negative numbers</h4>
+${R('<br>Step 1; write “–” as a sign of the answer.<br>Step 2; add the numbers then write the result after the sign of answer.<br>Step 3; Show the answer of expression.')}
+${E('–4 + –19<br>Step 1; write “–” as a sign of the answer. –4 + –19 = –<br>Step 2; add the numbers then write the result after the sign of answer. 4 + 19 = 23<br>Step 3; Show the answer of expression. –4 + –19 = –23')}
+${E('–23 + – 14<br>Step 1; –23 + – 14 = –<br>Step 2; 23 + 14 = 37<br>Step 3; –23 + – 14 = –37')}
+${E('– 4 + – 51 = – 55')}${E('– 43 + – 16 = –59')}`,'2.2. Addition',2);
+
+add(2,`<h3 class="h2">2.3. Subtraction</h3><p>We will look through subtraction operation in 4 cases.</p>
+<h4 class="h3">a. Subtraction a negative number from a negative number</h4>
+${E('– 8 – – 13<br>We can write “+” in place of “– –”<br>– 8 – – 13 = – 8 + 13 = 5')}${E('–14 – – 9 = –14 + 9 = –5')}${E('–44 – – 57 = –44 + 57 = 13')}
+<h4 class="h3">b. Subtraction a positive number from a negative number</h4>
+${E('–9 – + 4 = – 9 – 4 = –13')}${E('–14 – + 19 = –14 – 19 = –33')}${E('–101 – + 79 = –101 – 79 = –180')}
+<h4 class="h3">c. Subtraction a negative number from a positive number</h4>
+${E('5 – – 15 = 5 + 15 = 20')}${E('13 – – 24 = 13 + 24 = 37')}${E('76 – – 19 = 76 + 19 = 95')}
+<h4 class="h3">d. Subtraction a positive number from a positive number</h4>
+${E('16 – 9 = 7')}${E('21 – 17 = 4')}${E('33 – 45 = –12')}${E('9 – 18 = –9')}${E('78 – 59 = 19')}${E('34 – 67 = –33')}`,'2.3. Subtraction',2);
+
+add(2,`<h3 class="h2">2.4. Addition and subtraction on number line</h3>
+${R('<br>Step 1: Mention the first number on number line.<br>Step 2: According to operation, go to the right if the operation is addition, go to the left if the operation is subtraction.<br>Step 3: The answer will be the last point where you stopped.')}
+${E(`2 + 4<br>Step 1: Mention the first number on number line.${nl({dot:2})}Step 2: Meaning of +4 is go to the right 4 times.${nl({from:2,to:6})}Step 3: The last point we stopped is 6. Therefore, the answer is 6.`)}
+${E(`3 + – 5<br>Step 1:${nl({dot:3})}Step 2: We can write “–” in place of “+ –”. 3 + – 5 = 3 – 5<br>Meaning of –5 is going to the left 5 times.${nl({from:3,to:-2})}Step 3: The answer is –2.`)}
+${E(`–6 + 5 = –1${nl({from:-6,to:-1})}`)}
+${E(`–1 + – 6<br>–1 + – 6 = –1 – 6 = –7${nl({from:-1,to:-7})}`)}
+${E(`5 – + 6 = 5 – 6 = –1${nl({from:5,to:-1})}`)}
+${E(`–4 – – 7<br>–4 – – 7 = –4 + 7 = 3${nl({from:-4,to:3})}`)}
+${I('Tip: tap a number line to watch the jumps again. Tap 🔊 on any box to hear it.')}`,'2.4. Addition and subtraction on number line',2);
+
+add(2,`<h3 class="h2">2.5. Multiplication</h3>
+${R('If we are multiplying the same signed numbers, the answer will be positive always.<br>(–) . (–) = (+)<br>(+) . (+) = (+)')}
+${E('–4 × –7 = 28')}${E('–3 . –10 = 30')}${E('5 × 11 = 55')}${E('8 . 9 = 72')}
+${R('If we are multiplying the different signed numbers, the answer will be negative always.<br>(–) . (+) = (–)<br>(+) . (–) = (–)')}
+${E('–6 × 7 = –42')}${E('–4 . 9 = –36')}${E('12 × –4 = –48')}${E('2 . –9 = –18')}
+<h3 class="h2">2.6. Division</h3>
+${R(`If we are dividing the same signed numbers, the answer will be positive always.<br>(–) ÷ (–) = (+) &nbsp;&nbsp; ${fr('(–)','(–)')} = (+)<br>(+) ÷ (+) = (+) &nbsp;&nbsp; ${fr('(+)','(+)')} = (+)`)}
+${E('–28 ÷ –2 = 14')}${E(`${fr(-35,-7)} = 5`)}${E('36 ÷ 9 = 4')}${E(`${fr(42,6)} = 7`)}
+${R(`If we are dividing the different signed numbers, the answer will be negative always.<br>(–) ÷ (+) = (–) &nbsp;&nbsp; ${fr('(–)','(+)')} = (–)<br>(+) ÷ (–) = (–) &nbsp;&nbsp; ${fr('(+)','(–)')} = (–)`)}
+${E('–56 ÷ 8 = –7')}${E(`${fr('–63',7)} = –9`)}${E('32 ÷ –4 = –8')}${E(`${fr(45,'–9')} = –5`)}`,'2.5. Multiplication',2);
+P[P.length-1].sub=[['2.6. Division',2]];
+
+const X2='Chapter 2 · Exercise 1',FV='Find the value of each expression given below.';
+add(2,`<div class="exh">EXERCISE 1</div>
+${Q(X2,1,FV,items([['4 + 7',11],['12 + 5',17],['9 + 13',22],['17 + 8',25],['23 + 11',34],['21 + 37',58],['74 + 56',130],['65 + 48',113]]))}
+${Q(X2,2,FV,items([['4 + –2',2],['9 + –4',5],['14 + –7',7],['19 + –13',6],['26 + –17',9],['34 + –19',15],['58 + –37',21],['71 + –45',26]]))}
+${Q(X2,3,FV,items([['6 + –9',-3],['4 + –11',-7],['12 + –17',-5],['19 + –24',-5],['27 + –33',-6],['42 + –57',-15],['63 + –82',-19],['75 + –91',-16]]))}
+${Q(X2,4,FV,items([['–6 + –4',-10],['–8 + –13',-21],['–11 + –17',-28],['–23 + –71',-94],['–14 + –32',-46],['–26 + –17',-43],['–19 + –29',-48],['–37 + –45',-82]]))}`,'Exercise 1',2);
+
+add(2,`${Q(X2,5,FV,items([['–7 – –6',-1],['–24 – –11',-13],['–14 – –9',-5],['–17 – –12',-5],['–23 – –13',-10],['–31 – –29',-2],['–42 – –16',-26],['–53 – –28',-25]]))}
+${Q(X2,6,FV,items([['5 – –13',18],['2 – –17',19],['9 – –12',21],['14 – –9',23],['25 – –17',42],['34 – –19',53],['47 – –33',80],['56 – –27',83]]))}
+${Q(X2,7,FV,items([['17 – 9',8],['13 – 6',7],['27 – 14',13],['23 – 19',4],['34 – 26',8],['57 – 39',18],['96 – 73',23],['85 – 47',38]]))}
+${Q(X2,8,FV,items([['4 – 9',-5],['7 – 13',-6],['11 – 17',-6],['14 – 22',-8],['21 – 34',-13],['49 – 63',-14],['77 – 92',-15],['58 – 76',-18]]))}`,null);
+
+add(2,`${Q(X2,9,'Show each expression given below on number line. Write the answer, then press “Show on line”.',
+ nli('a','7 – 2',7,5)+nli('b','–4 + 9',-4,5)+nli('c','5 – 12',5,-7)+nli('d','1 – –5',1,6)+nli('e','– 4 – –10',-4,6)+nli('f','4 – +7',4,-3)+nli('g','–2 + –3',-2,-5))}`,null);
+
+add(2,`${Q(X2,10,FV,items([['–2 × –7',14],['–6 × –3',18],['–4 × –9',36],['–7 . –5',35],['–8 . –6',48],['–12 . –5',60],['–14 . –3',42],['–9 . –8',72]]))}
+${Q(X2,11,FV,items([['9 × 6',54],['7 × 8',56],['13 × 5',65],['6 . 7',42],['8 . 4',32],['11 . 2',22],['4 . 6',24],['12 . 3',36]]))}
+${Q(X2,12,FV,items([['–3 × 9',-27],['6 × –7',-42],['12 . –4',-48],['–5 × 9',-45],['8 × –3',-24],['4 . –2',-8],['–9 . 10',-90],['–7 × 6',-42]]))}
+${Q(X2,13,FV,items([['–35 ÷ –7',5],['18 ÷ 6',3],[fr('–28','–4'),7],[fr('–27','–9'),3],['56 ÷ 8',7],['–32 ÷ –4',8],[fr(42,6),7],['–64 ÷ –8',8]]))}
+${Q(X2,14,FV,items([['54 ÷ –6',-9],['–72 ÷ 9',-8],[fr(49,'–7'),-7],[fr('–54',9),-6],['–48 ÷ 8',-6],['64 ÷ –8',-8],[fr('–25',5),-5],[fr(36,'–4'),-9]]))}
+${Q(X2,15,FV,items([['–16 – –7',-9],['–63 ÷ 9',-7],['19 – 27',-8],[fr('–32','–8'),4],['22 + –54',-32],['–8 × 6',-48],['42 ÷ –6',-7],['29 + –13',16],['23 – +31',-8],['56 ÷ –7',-8],['–43 – +19',-62],['–13 . –4',52]]))}`,null);
+
+add(2,kws([
+ ['Expression','noun','5 + 13','Numbers and operation signs written together, like 5 + 13 or 8 × 4 – 2. Every expression has a value.','5 is a number, “+” is a sign, 13 is also a number … they form an expression.'],
+ ['Frequently','adverb','✓✓✓<br>✓✓✓','Very often; many times.','We will use “expression” word frequently in future.'],
+ ['Imaginary numbers','noun',`i = ${r('–1')}`,'Special numbers that cannot be shown on the number line, such as i = √–1. You will learn them in higher classes.','Number line is a line which all the numbers are shown on it except imaginary numbers.'],
+ ['Case','noun','<small style="font-size:14px">a. 5 + 4<br>b. 5 + –9<br>c. –4 + –9</small>','One of the possible situations. We study each situation separately: case a, case b, case c.','We will look through addition operation in 3 different cases.'],
+ ['Bigger','adjective','9 › 4','More in value. On the number line the number on the right is bigger: 9 › 4 and –1 › –5.','If the positive number is bigger than negative number …'],
+ ['Smaller','adjective','3 ‹ 8','Less in value. On the number line the number on the left is smaller: 3 ‹ 8 and –8 ‹ –2.','Step 3; subtract the smaller from the bigger.'],
+ ['Step','noun','1 2 3 4','One stage of a solution. We follow the steps in order: Step 1, Step 2, Step 3 …','Step 1; define the bigger number in terms of value.'],
+ ['Sign','noun','+ –<br>× ÷','A symbol that shows an operation or a direction: +, –, ×, ÷.','Addition operation is represented by “+” (plus) sign.'],
+ ['Rule','noun','<small style="font-size:13px">(–)(–) = (+)<br>(+)(–) = (–)</small>','Something that is always true and must be followed when we calculate.','RULE: If we are multiplying the same signed numbers, the answer will be positive always.'],
+ ['Given below','phrase','↓','Written under this sentence. Look down to find the questions.','Find the value of each expression given below.']
+]),'Key Words',1);
+
+/* ===== CHAPTER 3 ===== */
+add(3,chCover('3. ORDER OF OPERATIONS',
+ ['What is the priority among operations','What are the types of expressions','How to solve expressions according to their priorities and types','What is the exponentials, radicals and square numbers basically','How to solve complex expressions correctly without mind confusion'],
+ ['Bracket','Exponential','Radical','Including','Explanation','Consecutively','Square','Thus'],
+ ['28 Examples','2 Extra Information','6 Exercises','79 Questions','89 Options'],
+ 'The order of operations, a set of rules dictating the sequence for evaluating mathematical expressions, developed gradually over centuries, with the concept becoming formalized in the late 19th and early 20th centuries. While the specific rules were not universally agreed upon until relatively recently, the underlying principles of prioritizing certain operations over others emerged naturally with the development of algebraic notation and the need for unambiguous mathematical communication.',
+ 'Search and learn more information about order of operations in science history.'),'CHAPTER 3: ORDER OF OPERATIONS',0,true);
+
+add(3,mm({key:'descartes',name:'RENÉ DESCARTES',yrs:'1596 – 1650 · The man who gave us x³',sym:'<b>x²</b><svg viewBox="0 0 80 60" width="90"><path d="M8 4 Q40 100 72 4" fill="none" stroke="#e08a1e" stroke-width="3"/><line x1="40" y1="0" x2="40" y2="60" stroke="#333"/><line x1="0" y1="52" x2="80" y2="52" stroke="#333"/></svg><small>La Géométrie · 1637</small>',
+ facts:[['Born','1596, La Haye (France)'],['Died','1650, Stockholm (Sweden)'],['Field','Mathematics, philosophy'],['Famous book','La Géométrie (1637)']],
+ life:'Descartes was a French mathematician and philosopher. As a child he was often ill and was allowed to stay in bed in the mornings – thinking in bed became a lifelong habit. He lived in the Netherlands for twenty years and wrote his most important works there.',
+ works:['Made popular the way we write <em>powers</em>: x³, x⁴ … – the exponentials of Chapter 3.','Used <em>x, y, z</em> for unknown numbers and a, b, c for known numbers.','Invented the <em>coordinate plane</em> (the Cartesian plane).'],
+ link:'Exponents like 3⁵ in Chapter 3 are written the way Descartes made popular.',
+ dyk:'A story says he got the idea of coordinates by watching a fly on the ceiling.'}),'Meet the Mathematician: René Descartes',1);
+
+add(3,`<h2 class="h1">3. ORDER OF OPERATIONS</h2>
+<p>The operations can be given mixed in questions. At that time, we should follow the order among them. We have the basic rule to solve kind of these questions easily. This basic rule is called as “BEDMAS”.</p>
+<p><b class="t">1<sup>st</sup> “B”</b> represents brackets. Here are some kind of brackets; ( , ) , [ , ] , { , } .</p>
+<p>When you see the brackets, you must start to solve inside of the bracket first. Brackets hold the first position among the operations. You will start to solve questions from inside of the brackets.</p>
+<p><b class="t">2<sup>nd</sup> “E”</b> represents exponentials and radicals. Here are some examples of exponentials and radicals;</p><p class="ctr">2⁴, 5², ${r(16)}, ${r(50)}</p>
+<p>When you see the exponentials and radicals, you should start to calculate them before multiplication, division, addition and subtraction.</p>
+<p><b class="t">3<sup>rd</sup> “D”</b> represents division operation and <b class="t">“M”</b> represents multiplication operation. Here are some examples of division and multiplication operations;</p><p class="ctr">5 × 2, 10 ÷ 2, 11 . –2, 72 : 9.</p>
+<p>When you see multiplication and division operations, you must start to calculate them before addition and subtraction.</p>
+<p><b class="t">4<sup>th</sup> “A”</b> represents addition operation and <b class="t">“S”</b> represents subtraction operation. Here are some examples of addition and subtraction operations;</p><p class="ctr">15 – 2, –7 + 5, 14 – –23, 8 – 17.</p>
+<p>Now, we will look through examples from the easiest to hardest according to explanation above.</p>
+<p>In this book the questions have been divided into types according to their difficulty levels.</p>
+<h3 class="h2">TYPE 1: Including only addition and subtraction</h3>
+<p><b class="t">Explanation;</b> When you see only addition and subtraction in an expression, it does not matter starting from which operation.</p>
+${E('11 + 7 + 5<br>11 + 7 is 18 and 18 + 5 is 23. You can also add 7 and 5 first then 11. You will find the same answer.')}
+${E('8 – 9 + 4<br>8 – 9 is equal to –1. –1 + 4 is equal to 3.<br>You can also add –9 and 4 then 8. You will find the same answer.')}
+${E('–18 + 3 + 25 – 6<br>–18 + 3 is –15. –15 + 25 is 10. 10 – 6 is 4.')}
+${E('4 – –12 + 5<br>double – will be +. 4 + 12 is 16. 16 + 5 is 21.')}
+${E('–21 + 17 + –2 + 8 – 11<br>–21 + 17 is –4. –4 + – 2 is – 6. –6 + 8 is 2. 2 – 11 is –9.')}
+<h3 class="h2">TYPE 2: Including only multiplication and division</h3>
+<p><b class="t">Explanation;</b> If you see only multiplication and division in the same expression, start from left to right.</p>
+${E('12 : 4 × 3<span class="nosay"><br><span style="color:#19a34a;font-weight:900">12 : 4 × 3 &nbsp;⟶</span></span><br>Start from division. 12 : 4 is 3. 3 × 3 is 9.')}
+${W('If you start from right to left or in the middle of the expression, you will find the wrong answer. Like;<br><span style="color:#e03131;font-weight:900">⟵&nbsp; 12 : 4 × 3</span><br>12 : 12 = 1. 1 is a wrong answer.','This is so IMPORTANT:')}
+${E('12 × 4 : 3 : 8<br>12 × 4 is 48. 48 : 3 is 16. 16 : 8 is 2.')}${E('72 : 9 × 3<br>72 : 9 is 8. 8 × 3 is 24.')}${E('7 × 4 : 14<br>7 × 4 is 28. 28 : 14 is 2.')}${E('24 : 6 × 2 : 4<br>24 : 6 is 4. 4 × 2 is 8. 8 : 4 is 2.')}
+<h3 class="h2">TYPE 3: Including TYPE 1 and 2</h3>
+<p><b class="t">Explanation;</b> According to rule BEDMAS you must start from multiplication and division when you see all these 4 operations in the same expression.</p>
+${E('9 + 14 : 2<br>Division first, 14 : 2 is 7. 9 + 7 is 16.')}
+${E('12 × 2 + 4 – 26 : 2<br>Multiplication and division first. 12 × 2 is 24 and 26 : 2 is 13. Now the expression can be rewritten like; 24 + 4 – 13. Therefore, 24 + 4 is 28 and 28 – 13 is 15.')}
+${E('14 – 36 : 9 × 5 + 8<br>In this question, division and multiplication has been given consecutively. You must use rule type 2 here.<br>First division and then multiplication. 36 : 9 is 4 and 4 × 5 is 20. The expression can be written like; 14 – 20 + 8. 14 – 20 is – 6. – 6 + 8 is 2.')}`,'3. Order of Operations',1);
+P[P.length-1].sub=[['Type 1: Including only addition and subtraction',2],['Type 2: Including only multiplication and division',2],['Type 3: Including Type 1 and 2',2]];
+
+add(3,`<h3 class="h2">TYPE 4: TYPE 1, 2, 3 INCLUDING EXPONENTIALS AND RADICALS</h3>
+<p>Before solving type 4 questions, the basic explanations and definitions of exponentials and radicals should be known. These two titles will be explained in the “Elementary Mathematics &amp; Geometry III” with more details.</p>
+<h4 class="h3">1<sup>st</sup> Exponentials</h4>
+<p>If a number has multiplied by itself many times, we can show them as an expression in short. That expression will be called as exponential expression.</p>
+${E('3×3×3×3×3 can be shown as an exponential. In this example 3 has been multiplied by 5 times. 3 will be called as a base and 5 will be called as index, exponent or power.<br>It will be shown like; 3×3×3×3×3 = 3⁵<div class="nosay" style="font-size:34px;font-weight:900;margin:6px 0 0 10px">3<sup style="font-size:20px;color:#d42020">5</sup> <small style="font-size:14px;color:#d42020">← power</small></div><small class="nosay" style="color:#2563c9;font-weight:900;margin-left:10px">↑ base<br></small>Pronunciation of 3⁵ is “3 to the power of 5”<br>Base shows which number you need to multiply and power show how many times.')}
+${E('7×7×7×7<br>7×7×7×7 = 7⁴ “7 to the power of 4”')}${E('1×1×1×1×1×1×1×1<br>1×1×1×1×1×1×1×1 = 1⁸ “1 to the power of 8”')}${E('what is the value of 2³ ?<br>2³ = 2×2×2 = 8')}
+${W('2³ <u>is not</u> a 2 × 3 and the answer <u>is not</u> equal to 6.')}
+<h4 class="h3">2<sup>nd</sup> Radicals</h4>
+<p><b class="t">PART 1 “Root sign and degree of root”</b></p><p>“√” this is a root sign.</p>
+<div class="rootd"><span style="color:#d42020;font-weight:800">Degree of root →</span><span class="rbig"><i></i><span class="rad"><span class="rs"></span><span class="ri"><u></u></span></span></span><span style="color:#2563c9;font-weight:800">← Inside number</span></div>
+<p>If there is nothing in place of degree of root, we accept that it is 2 always. We pronounce it like “square root” or mostly just “root”.</p>
+<p>√ and ²√ are the same expressions but we use always √ this one.</p><p>Pronunciation of ${r(7)} is “root seven”</p>
+<p><b class="t">PART 2 “Inside number”</b></p>
+<p>We will come across with roots include inside number which is squared number.</p><p>We must learn first what is the <b>square numbers.</b></p>
+<p>Square numbers are numbers which can be shown as a square of another number. For example;</p>
+<p>4 is a square number, because 4 is square of 2.</p><p class="ctr">4 = 2²</p><p>49 is a square number because 49 is square of 7.</p><p class="ctr">49 = 7²</p>
+<p>Thus, the meaning of ${r(25)} is “which number’s square is 25?”. The answer of the question is 5. Therefore, we can write directly ${r(25)} = 5.</p>
+${E(`${r(100)} = 10, ${r(64)} = 8, ${r(81)} = 9, ${r(9)} = 3, ${r(121)} = 11`)}
+<p>Now we can merge type 1, 2, 3 and type 4.</p>
+<p><b class="t">Explanation:</b> the same rules we have learnt in type 1, 2, 3 will be followed. We will calculate exponentials and radicals before multiplication, division, addition and subtraction operations.</p>
+${E(`${r(16)} : 2 + 8 – 5²<br>${r(16)} and 5² are exponential and radical. Calculate them first.<br>${r(16)} : 2 + 8 – 5² = 4 : 2 + 8 – 25<br>You must calculate division first then addition and subtraction.<br>4 : 2 + 8 – 25 = 2 + 8 – 25 = 10 – 25 = –15`)}
+${E(`2³ × ${r(9)} + 4² : 2 – 10 + 8<br>Calculate exponentials and radical first,<br>2³ × ${r(9)} + 4² : 2 – 10 + 8 = 8 × 3 + 16 : 2 – 10 + 8<br>Then calculate multiplication and division.<br>8 × 3 + 16 : 2 – 10 + 8 = 24 + 8 – 10 + 8 = 32 – 10 + 8 = 30`)}
+${E(`3³ : ${r(9)} × 2² – ${r(25)} + 20 – 8²<br>Calculate exponentials and radical first,<br>3³ : ${r(9)} × 2² – ${r(25)} + 20 – 8² = 27 : 3 × 4 – 5 + 20 – 64<br>Then calculate multiplication and division. (TAKE CARE TYPE 2 RULE HERE)<br>27 : 3 × 4 – 5 + 20 – 64 = 9 × 4 – 5 + 20 – 64<br>= 36 – 5 + 20 – 64 = 31 – 44 = – 13.`)}
+${E(`${r(36)} + ${r(49)} – 13 + ${r(169)} – 2⁴ : 4<br>Calculate exponentials and radical first,<br>= 6 + 7 – 13 + 13 – 16 : 4<br>Then calculate multiplication and division.<br>= 6 + 7 – 13 + 13 – 4 = 13 – 13 + 13 – 4 = 13 – 4 = 9.`)}
+${E(`${r('13 + 12')} × 2⁴ – 6² – ${r('8² – 5 × 3')}<br>In this question, there are some other expressions inside of the roots. As we learnt, we must solve radicals first, thus, we must solve the inside of the radicals.<br>= ${r(25)} × 2⁴ – 6² – ${r('64 – 15')}<br>= ${r(25)} × 2⁴ – 6² – ${r(49)}<br>Now we can calculate radicals and exponentials.<br>${r(25)} × 2⁴ – 6² – ${r(49)} = 5 × 16 – 36 – 7<br>Then calculate multiplication.<br>5 × 16 – 36 – 7 = 80 – 36 – 7 = 44 – 7 = 37.`)}
+${E(`5³ – ${r('10² + 23 × 3')} + (4 + 2)²<br>${r('10² + 23 × 3')} = ${r('100 + 69')} = ${r(169)} = 13<br>5³ – ${r('10² + 23 × 3')} + (4 + 2)² = 125 – 13 + 36 = 148.`)}
+${E(`(14 – 3²)² + ${r('22 – 16 + 30')} – 7² + ${r(144)}<br>(14 – 3²)² = (14 – 9)² = 5² = 25<br>${r('22 – 16 + 30')} = ${r(36)} = 6<br>(14 – 3²)² + ${r('22 – 16 + 30')} – 7² + ${r(144)} = 25 + 6 – 49 + 12 = – 6`)}`,'Type 4: Type 1, 2, 3 including exponentials and radicals',2);
+
+add(3,`<h3 class="h2">TYPE 5: INCLUDING ALL TYPES AND BRACKETS</h3>
+<p>We will always solve inside of the bracket first and use BEDMAS rule.</p>
+${E('( 3 + 1 ) × 2<br>First inside of the bracket, then others according to BEDMAS rule.<br>( 3 + 1 ) × 2 = 4 × 2 = 8.')}
+${E(`( 4 – 1 + 3² ) – ${r(16)} : 2²<br>First inside of the bracket, then others according to BEDMAS rule.<br>( 4 – 1 + 3² ) = ( 3 + 9 ) = 12<br>( 4 – 1 + 3² ) – ${r(16)} : 2² = 12 – 4 : 4 = 12 – 1 = 11.`)}
+${E(`[4 – (8² : ${r(64)} + 10) × 2] × (– 2 – 1 × 4) + – 11<br>First inside of the bracket, then others according to BEDMAS rule.<br>(8² : ${r(64)} + 10) = 64 : 8 + 10 = 8 + 10 = 18<br>[4 – (8² : ${r(64)} + 10) × 2] = 4 – 18 × 2 = 4 – 36 = – 32<br>(– 2 – 1 × 4) = – 2 – 4 = – 6<br>[4 – (8² : ${r(64)} + 10) × 2] × (– 2 – 1 × 4) + – 11 =<br>= – 32 × – 6 + – 11 = 192 – 11 = 181.`)}
+<p style="text-align:center;font-size:44px;margin:24px 0 0">B · E · D M · A S</p>
+<p class="ctr" style="color:#888">Brackets → Exponentials &amp; radicals → Division &amp; Multiplication (left to right) → Addition &amp; Subtraction</p>`,'Type 5: Including all types and brackets',2);
+
+const X31='Chapter 3 · Exercise 1',SE='Solve each expression below.';
+add(3,`<div class="exh">EXERCISE 1 ‘TYPE 1, 2, 3’</div>
+${Q(X31,1,SE,items([['15 + 3 + 4',22],['18 – 11 + 5 – 9',3],['– 20 + 16 + – 4',-8],['1 – 17 – – 9 + 13',6],['– 9 – 10 + 17',-2],['41 – 70 + 25 – 16',-20]]))}
+${Q(X31,2,SE+' (Fractions like 6/7 are allowed.)',items([['70 : 7 × 3',30],['96 : 16 × 2 : 14','6/7|12/14'],['8 × 7 : 4',14],['13 × 6 : 2 × – 3',-117],['–18 : – 6 × 8 : – 2',-12],['3 × 12 : – 9 × – 7',28]]))}
+${Q(X31,3,SE,items([['– 11 + 3 × 7 – 4 × 2',2],['4 – 3 × – 6 + 1 × – 20',2],['9 × 8 : – 4 + 10',-8],['7 + 7 × 7 – 7 : 7',55],['17 + 9 – 56 : 2',-2],['– 8 × 4 – –24 : 6 + 13',-15]]))}`,'Exercise 1 ‘Type 1, 2, 3’',2);
+
+const X32='Chapter 3 · Exercise 2',X33='Chapter 3 · Exercise 3',X34='Chapter 3 · Exercise 4';
+add(3,`<div class="exh">EXERCISE 2</div>
+${Q(X32,1,'Show the expressions below as exponential. (Type 4^6 for 4⁶)',items([['4×4×4×4×4×4','4^6','4⁶'],['7×7','7^2','7²'],['9×9×9×9','9^4','9⁴'],['13×13×13','13^3','13³'],['6×6×6×6×6×6×6','6^7','6⁷'],['5×5×5×5×5','5^5','5⁵']]))}
+${Q(X32,2,'Calculate the values of exponentials below.',items([['2⁴',16],['3²',9],['4³',64],['2⁷',128],['5³',125],['3⁴',81]]))}
+<div class="exh">EXERCISE 3</div>
+${Q(X33,1,'Write the names of places;',`<div class="rootd"><span class="it"><b>a.</b>${inp('degree of root|degree','degree of root','wide')} →</span><span class="rbig"><i></i><span class="rad"><span class="rs"></span><span class="ri"><u></u></span></span></span><span class="it">← <b>b.</b>${inp('inside number|radicand','inside number','wide')}</span></div>`)}
+${Q(X33,2,'Tap (circle) the square numbers among the numbers given below.',grid([1,2,4,5,8,16,18,24,25,36,40,48,49,60,62,64,72,78,80,81,84,89,92,96,100,110,120,121,125,134,136,140,142,144,160,169,172,181,196,200,216,225],[1,4,16,25,36,49,64,81,100,121,144,169,196,225]))}
+${Q(X33,3,'Fill the blanks.',`<div class="items">${[[16,4],[49,7],[null,11,121],[81,9],[64,8],[100,10],[null,13,169],[144,12],[4,2],[null,4,16],[196,14],[null,6,36],[null,9,81],[null,5,25],[null,10,100],[9,3],[null,12,144],[121,11]].map((x,i)=>x[0]!=null?`<div class="it"><b>${L[i]}.</b><span class="ex">${r(x[0])} =</span>${inp(x[1])}</div>`:`<div class="it"><b>${L[i]}.</b><span class="ex">${r(inp(x[2]))} = ${x[1]}</span></div>`).join('')}</div>`)}
+<div class="exh">EXERCISE 4 ‘Exponentials and radicals mixed’</div>
+${Q(X34,'','Find the value of each option below.',items([['5²',25],[r(16),4],['3²',9],[r(1),1],['9²',81],[r(100),10],['6²',36],[r(4),2],['10²',100],[r(25),5],['12²',144],[r(49),7],['2²',4],[r(121),11],['7²',49],[r(81),9],['11²',121],[r(9),3],['4²',16],[r(64),8],['8²',64],[r(36),6],['1²',1],[r(144),12],[r(0),0],['0²',0]]))}`,'Exercise 2 · 3 · 4',2);
+
+const X35='Chapter 3 · Exercise 5';
+add(3,`<div class="exh">EXERCISE 5 ‘Including TYPE 4 and 5’</div>
+${Q(X35,1,SE,items([[`10 – 4³ ÷ 8 + ${r(9)}`,5],['12 ÷ 2² × 3²',27],[`14 ÷ ${r(4)} + 5² × 3`,82],[`100 ÷ 5² + 4 × ${r(4)}`,12],[`25 – 5² × 2 + ${r(16)}`,-21],[`18 ÷ ${r(9)} + 4² × 2`,38]]))}
+${Q(X35,2,SE,items([[`(10 – 4)² × 2 + ${r(16)}`,76],[`(15 – 5)² × 2 + ${r(25)}`,205],[`[(5² – 3) × ${r(16)}] ÷ 2³`,11],[`{16 – [4³ ÷ 8 + ${r(9)}]}`,5],[`[(4³ – 8) ÷ ${r(49)}] × 2⁴`,128],[`{[2 + 3]² × 4} ÷ ${r(16)}`,25],['{17 ÷ [2³ + 3²]}',1]]))}`,'Exercise 5 ‘Including Type 4 and 5’',2);
+
+const X36='Chapter 3 · Exercise 6';
+add(3,`<div class="exh">EXERCISE 6 ‘All types mixed’</div>
+${Q(X36,'1–40','',items([['5 + 3 – 2',6],['10 – 4 + 2',8],['2 + 3 – 4',1],['12 – 2 + 3',13],['8 + 2 – 6',4],['15 – 3 + 2',14],['7 + 2 – 3',6],['10 – 5 + 4',9],['6 + 2 – 3',5],['12 – 4 + 1',9],['5 + 3 × 2',11],['10 – 4 ÷ 2',8],['2 + 3 × 4',14],['12 ÷ 2 × 3',18],['8 + 2 – 6 ÷ 2',7],['15 ÷ 3 + 2 × 4',13],['7 – 2 × 3 + 1',2],['10 ÷ 5 + 4 × 2',10],['6 × 2 ÷ 3 + 5',9],['12 – 4 × 2 + 1',5],['8 + 10 ÷ 5 × 3',14],['16 ÷ 4 + 3 × 2',10],['9 – 3 × 2 + 5',8],['14 ÷ 2 + 5 × 3',22],['10 – 4 × 2 + 1',3],['18 ÷ 3 + 4 × 2',14],['12 – 6 ÷ 2 + 3',12],['20 ÷ 5 + 3 × 2',10],['15 – 5 × 2 + 4',9],['16 ÷ 2 + 6 × 3',26],['12 + 4 ÷ 4 × 2',14],['24 ÷ 6 + 2 × 3',10],['18 – 9 ÷ 3 + 2',17],['28 ÷ 4 + 5 × 2',17],['15 – 5 × 2 + 3',8],['30 ÷ 5 + 4 × 2',14],['24 – 12 ÷ 2 + 3',21],['32 ÷ 4 + 3 × 2',14],['25 – 5 × 2 + 4',19],['36 ÷ 3 + 6 × 2',24]],1))}`,'Exercise 6 ‘All types mixed’',2);
+
+add(3,`${Q(X36,'41–68','',items([[`(5² – 3) × ${r(16)} ÷ 2`,44],[`(2 + 3)² × 4 ÷ ${r(16)}`,25],[`8 + 2² – 6 ÷ ${r(4)}`,9],[`15 ÷ ${r(9)} + 2² × 4`,21],[`(7 – 2)² × 3 + ${r(25)}`,80],[`6² × 2 ÷ ${r(9)} + 5`,29],[`12 – 4² × 2 + ${r(16)}`,-16],[`(8 + 2)² ÷ ${r(25)} × 3`,60],['16 ÷ 2² + 3² × 2',22],[`9 – 3² × 2 + ${r(25)}`,-4],[`12 – 6² ÷ ${r(4)} + 3`,-3],[`20 ÷ ${r(25)} + 3² × 2`,22],[`15 – 5² × 2 + ${r(16)}`,-31],[`16 ÷ ${r(4)} + 6² × 3`,116],[`(12 – 4)² ÷ ${r(16)} × 2`,32],[`24 ÷ ${r(36)} + 2² × 3`,16],[`18 – 9² ÷ ${r(9)} + 2`,-7],[`28 ÷ ${r(4)} + 5² × 2`,64],[`30 ÷ ${r(25)} + 4² × 2`,38],[`24 – 12² ÷ ${r(4)} + 3`,-45],[`32 ÷ ${r(16)} + 3² × 2`,26],[`36 ÷ ${r(9)} + 6² × 2`,84],[`{8 + [2² – (6 ÷ ${r(4)})]}`,9],[`{15 ÷ ${r(9)} + [2² × 4]}`,21],[`{[7 – 2]² × 3} + ${r(25)}`,80],[`{81 ÷ [5² + (4 ÷ ${r(4)})]}`,3],[`{[6² × 2] ÷ ${r(9)}} + 5`,29],[`{12 – [4² × (2 – ${r(16)})]}`,44]],41))}`,null);
+
+add(3,kws([
+ ['Bracket','noun','( )<br>[ ]<br>{ }','The symbols ( ), [ ] and { } that group numbers together. Always calculate inside the brackets first.','Brackets hold the first position among the operations.'],
+ ['Exponential','noun','3⁵','A short way to write a number multiplied by itself: 3 × 3 × 3 × 3 × 3 = 3⁵ (base 3, power 5).','Pronunciation of 3⁵ is “3 to the power of 5”.'],
+ ['Radical','noun',`${r(25)} = 5`,'An expression with the root sign √. √25 asks: “Which number’s square is 25?” The answer is 5.','When you see the exponentials and radicals, you should start to calculate them before multiplication, division, addition and subtraction.'],
+ ['Pronunciation','noun','🗣 3⁵','The way a word or an expression is said aloud.','Pronunciation of 3⁵ is “3 to the power of 5”.'],
+ ['Including','preposition','+ –<br>×','Having something as a part. An expression including addition has a “+” inside it.','TYPE 1: Including only addition and subtraction.'],
+ ['Explanation','noun','💡<br><small style="font-size:12px">how? why?</small>','Words that help you to understand how and why something works.','Explanation; When you see only addition and subtraction in an expression, it does not matter starting from which operation.'],
+ ['Consecutively','adverb','<small style="font-size:15px">÷ then ×<br>1→2→3</small>','One after another, without a break: 1, 2, 3, 4, 5 …','In this question, division and multiplication has been given consecutively.'],
+ ['Square','noun','4² = 16','A shape with four equal sides. A number multiplied by itself is its square: 4 × 4 = 4² = 16, so 16 is a square number.','4 is a square number, because 4 is square of 2.'],
+ ['Merge','verb','⤵ ⤹<br><small style="font-size:12px">together</small>','To join two or more things together into one.','Now we can merge type 1, 2, 3 and type 4.'],
+ ['Thus','adverb','∴','So; for this reason. We use it before a result or a conclusion.','Thus, the meaning of √25 is “which number’s square is 25?”.']
+]),'Key Words',1);
+
+/* Answer key (built from the exercises) */
+add(4,`<span class="pill">Answer key</span><p class="ctr" style="color:#666">Tap a chapter to open its answers.</p><div class="ak" id="akey"></div>`,'ANSWER KEY',0,true);
+
+/* Back cover */
+add(0,`<div class="back"><div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap"><div style="background:#dff7d6;padding:8px 10px;border-radius:8px;text-align:center">${LOGO.replace('<svg','<svg style="width:48px;height:48px"')}<br>${BRAND}</div><div><div class="tf1" style="margin:0;color:#fff">‘TEACHER AND STUDENT FRIENDLY’</div><div class="big" style="font-size:clamp(30px,7vw,52px)">ELEMENTARY MATH 1</div></div></div>
+<div class="about"><span class="pill" style="--c:#1d4d22;--cd:#1d4d22;margin-top:-40px;background:#f7faf8">About this book</span>Elementary Math 1 is a step-by-step workbook that builds strong calculation skills from the very first page. Every topic starts with clear definitions, rules and solved examples, and continues with carefully graded exercises – from the easiest to the hardest. Mathematician profiles, an illustrated dictionary of key words and full answer keys complete every chapter.</div>
+<div class="wi"><b style="letter-spacing:3px">WHAT'S INSIDE</b><span style="background:#18b257;color:#0f4d26">1. NUMBERS</span><span style="background:#2aa6ee;color:#0d3f8f">2. 4 FUNDAMENTAL OPERATIONS</span><span style="background:#f5a23a;color:#8f1d0c">3. ORDER OF OPERATIONS</span></div>
+<div class="stats"><div><b>100</b><small>EXAMPLES</small></div><div><b>14</b><small>EXTRA INFO</small></div><div><b>8</b><small>EXERCISES</small></div><div><b>97</b><small>QUESTIONS</small></div><div><b>234</b><small>OPTIONS</small></div></div>
+<div class="ticks"><div>THE MOST DETAILED AND UNDERSTANDABLE EXPLANATION</div><div>THE MOST NUMBER OF EXAMPLES AND EXERCISES</div><div>ADDITIONAL SCHOOL MATERIAL TO IMPROVE CALCULATION ABILITY</div><div>ILLUSTRATED AND EXPLANATORY DICTIONARY</div><div>WITH ANSWER KEYS</div></div>
+<div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:20px"><div style="background:#fff;color:#999;padding:16px 40px;text-align:center;font-weight:800">ISBN / BARCODE<br><small>(place here)</small></div><div style="background:#a8642a;border-radius:50%;width:90px;height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;line-height:1">GRADE<span style="font-family:'Lilita One';font-size:34px">5+</span></div></div></div>`,'Back Cover',0,true);
+
+/* ---------- render ---------- */
+const book=document.getElementById('book');
+book.innerHTML=P.map((p,i)=>{const t=TH[p.ch];return `<article class="page" id="p${i}" style="--c:${t[0]};--c2:${t[1]};--cd:${t[2]}">${p.full?'':`<div class="band"><span>${t[3]}</span><div class="rt"><em>${t[4]}</em></div></div>`}${p.full&&!/class="(cover|back)"/.test(p.html)?`<div class="pc">${p.html}</div>`:(p.full?p.html:`<div class="pc">${p.html}</div>`)}${p.full&&/class="(cover|back)"/.test(p.html)?'':`<div class="pno"><b>${i+1}</b></div>`}</article>`}).join('');
+document.getElementById('ttl').innerHTML=LOGO+'Elementary Math 1';
+
+/* contents + drawer toc */
+const tocEntries=[];
+P.forEach((p,i)=>{if(p.toc){const isCh=/^CHAPTER|^ANSWER/.test(p.toc);tocEntries.push({t:p.toc,i,l:isCh?0:p.lvl,ch:isCh,c:TH[p.ch][2]});}(p.sub||[]).forEach(s=>tocEntries.push({t:s[0],i,l:s[1],c:TH[p.ch][2]}))});
+document.getElementById('contents').innerHTML=tocEntries.filter(e=>e.t!=='Cover').map(e=>`<a href="#" data-go="${e.i}" class="${e.ch?'ch':'l'+e.l}" style="color:${e.ch?e.c:''}">${e.t}<span></span>${e.i+1}</a>`).join('');
+document.getElementById('toc').innerHTML=tocEntries.map(e=>`<a href="#" data-go="${e.i}" class="${e.ch?'ch':'l'+e.l}" style="${e.ch?'color:'+e.c:''}"><span>${e.t}</span><small>${e.i+1}</small></a>`).join('');
+
+/* answer key from exercises */
+function buildKey(){const groups={};document.querySelectorAll('.q').forEach(q=>{const ex=q.dataset.ex;(groups[ex]=groups[ex]||[]).push(q)});
+ const chap={};Object.keys(groups).forEach(ex=>{const c=ex.split(' · ')[0];(chap[c]=chap[c]||[]).push(ex)});
+ const titles={'Chapter 1':'1. NUMBERS','Chapter 2':'2. ‘4’ FUNDAMENTAL OPERATIONS','Chapter 3':'3. ORDER OF OPERATIONS'};
+ document.getElementById('akey').innerHTML=Object.keys(chap).map(c=>`<details><summary>${titles[c]||c}</summary>${chap[c].map(ex=>`<h6>${ex.split(' · ')[1].toUpperCase()}</h6>${groups[ex].map(q=>{const its=[...q.querySelectorAll('.g')].map(g=>{const b=g.closest('.it')?.querySelector('b');return `<span>${b?`<b>${b.textContent}</b> `:''}${g.dataset.show}</span>`});const head=q.dataset.n?`<b style="color:#555">${q.dataset.n}.</b> `:'';return S.unl[qid(q)]?`<div style="margin:4px 0">${head}<div class="row">${its.join('')}</div></div>`:`<div class="lockk" style="margin:4px 0">${head}🔒 Solve this question and press ✔ Check to see its answers.</div>`}).join('')}`).join('')}</details>`).join('');
+}
+
+/* ---------- state ---------- */
+const SK='em1-smartbook-v1';let S={v:{},res:{},page:0,ls:{}};
+try{const s=JSON.parse(localStorage.getItem(SK)||'null');if(s)S=Object.assign(S,s)}catch(e){}
+S.ls=S.ls||{};S.unl=S.unl||{};
+const qid=q=>q.dataset.ex+'|'+q.dataset.n;
+function qAnswered(q){return [...q.querySelectorAll('.g')].every(g=>getVal(g).trim()!=='')}
+function updLocks(){document.querySelectorAll('.q').forEach(q=>{const u=!!S.unl[qid(q)];const sh=q.querySelector('.shw');sh.disabled=!u;sh.title=u?'':'Answer all the questions and press Check first';sh.innerHTML=u?'👁 Show answers':'🔒 Show answers';q.querySelectorAll('.drawbtn').forEach(d=>{d.disabled=!u;d.textContent=u?'Show on line':'🔒 Show on line'})});buildKey()}
+const save=()=>{try{localStorage.setItem(SK,JSON.stringify(S))}catch(e){}};
+const norm=s=>String(s).toLowerCase().replace(/[−–—]/g,'-').replace(/∞/g,'infinity').replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]+/g,m=>'^'+[...m].map(c=>'⁰¹²³⁴⁵⁶⁷⁸⁹'.indexOf(c)).join('')).replace(/\*\*/g,'^').replace(/\s+/g,'').replace(/[.。]$/,'').replace(/^\+(?=\d)/,'').replace(/s$/,'');
+function getVal(g){if(g.tagName==='INPUT')return g.value;return [...g.querySelectorAll('button.sel')].map(b=>b.dataset.v).join(',')}
+function setVal(g,v){if(g.tagName==='INPUT'){g.value=v;return}const set=new Set(String(v).split(','));g.querySelectorAll('button').forEach(b=>b.classList.toggle('sel',set.has(b.dataset.v)))}
+function isOk(g){const v=getVal(g);if(g.tagName==='INPUT'){if(!v.trim())return false;return g.dataset.ans.split('|').some(a=>norm(a)===norm(v))}
+ if(g.classList.contains('tf'))return v===g.dataset.ans;
+ const a=g.dataset.ans.split(',').sort().join(','),b=v.split(',').filter(Boolean).sort().join(',');return a===b}
+document.querySelectorAll('.g').forEach(g=>{const k=g.dataset.k;if(S.v[k]!=null)setVal(g,S.v[k]);if(S.res[k]!=null&&getVal(g)!=='')g.classList.add(S.res[k]?'ok':'bad')});
+
+function updScore(){const all=document.querySelectorAll('.g').length;const ok=Object.values(S.res).filter(x=>x===1).length;
+ document.getElementById('score').innerHTML=`⭐ Correct answers: ${ok} / ${all}<div class="bar"><i style="width:${(ok/all*100).toFixed(1)}%"></i></div>`}
+updScore();
+
+book.addEventListener('input',e=>{const g=e.target.closest('input.g');if(!g)return;g.classList.remove('ok','bad');const s=g.nextElementSibling;if(s&&s.classList.contains('sol'))s.remove();S.v[g.dataset.k]=g.value;delete S.res[g.dataset.k];save()});
+book.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.matches('input.g')){e.preventDefault();const q=e.target.closest('.q');const ins=[...q.querySelectorAll('input.g')];const n=ins[ins.indexOf(e.target)+1];n?n.focus():q.querySelector('.chk').click()}});
+book.addEventListener('click',e=>{
+ const b=e.target.closest('button');const svg=e.target.closest('svg.nl');
+ if(svg&&!svg.classList.contains('hid')||svg&&svg.classList.contains('rev')){replay(svg);return}
+ if(!b)return;
+ const tfg=b.closest('.tf');if(tfg){tfg.querySelectorAll('button').forEach(x=>x.classList.toggle('sel',x===b));mark(tfg);return}
+ const sg=b.closest('.sets,.grid');if(sg){b.classList.toggle('sel');mark(sg);return}
+ if(b.classList.contains('drawbtn')){if(!S.unl[qid(b.closest('.q'))])return;const s=b.parentElement.querySelector('svg.nl');s.classList.add('rev');replay(s);return}
+ if(b.matches('.say,.bsay,.hsay,.psay,.csay')){if(qBtn===b){stopTalk();return}
+  let items;
+  if(b.classList.contains('say'))items=[{el:b.closest('.kwr'),text:mathSpeak(b.dataset.say)}];
+  else if(b.classList.contains('csay'))items=[{el:b.closest('.cbox'),text:boxText(b.closest('.cbox'))}];
+  else if(b.classList.contains('bsay'))items=itemsFor(b.closest('.box'));
+  else if(b.classList.contains('hsay'))items=sectionItems(b.closest('h2,h3,h4'));
+  else items=pageItems(b.closest('.page'));
+  items=items.filter(x=>x.text&&/[A-Za-z0-9]/.test(x.text));
+  const pos=b.dataset.lk?(S.ls[b.dataset.lk]||0):0;
+  if(pos>0&&pos<items.length){askResume(b,items,pos);return}
+  play(items,b,0);return}
+ if(b.classList.contains('tb')){togglePanel(b);return}
+ if(b.classList.contains('watch')){vOpen(b.dataset.story);return}
+ const q=b.closest('.q');if(!q)return;const gs=[...q.querySelectorAll('.g')];
+ if(b.classList.contains('chk')){let ok=0;gs.forEach(g=>{const r=isOk(g);ok+=r;g.classList.remove('ok','bad');g.classList.add(r?'ok':'bad');S.res[g.dataset.k]=r?1:0;if(g.classList.contains('grid')){const set=new Set(g.dataset.ans.split(','));g.querySelectorAll('button.sel').forEach(x=>{x.classList.toggle('gok',set.has(x.dataset.v));x.classList.toggle('gbad',!set.has(x.dataset.v))})}});
+  const sc=q.querySelector('.sc');sc.textContent=`${ok} / ${gs.length} ${ok===gs.length?'🎉 Excellent!':ok>=gs.length*.7?'👍 Good!':'💪 Try again!'}`;sc.style.color=ok===gs.length?'var(--ok)':'var(--cd)';if(qAnswered(q)){S.unl[qid(q)]=1;revealSol(q,true)}else{sc.textContent+=' · 🔒 Answer every question to unlock the answers and solutions.'}save();updScore();updLocks()}
+ if(b.classList.contains('shw')){if(!S.unl[qid(q)])return;gs.forEach(g=>{if(g.classList.contains('grid')){const set=new Set(g.dataset.ans.split(','));g.querySelectorAll('button').forEach(x=>{const sq=set.has(x.dataset.v),sl=x.classList.contains('sel');x.classList.toggle('should',sq&&!sl);x.classList.toggle('gok',sq&&sl);x.classList.toggle('gbad',!sq&&sl)});if(!q.querySelector('.gsol'))g.insertAdjacentHTML('afterend',`<span class="sol gsol">✔ Square numbers: ${g.dataset.show}<br><small style="color:#555">1=1², 4=2², 16=4², 25=5², 36=6², 49=7², 64=8², 81=9², 100=10², 121=11², 144=12², 169=13², 196=14², 225=15²</small></span>`);return}if(isOk(g))return;
+  const nx=g.nextElementSibling;if(nx&&nx.classList.contains('sol'))return;g.insertAdjacentHTML('afterend',`<span class="sol">→ ${g.dataset.show}</span>`)});revealSol(q,false)}
+ if(b.classList.contains('rst')){gs.forEach(g=>{setVal(g,'');g.classList.remove('ok','bad');delete S.v[g.dataset.k];delete S.res[g.dataset.k];g.querySelectorAll?.('.should,.gok,.gbad').forEach(x=>x.classList.remove('should','gok','gbad'))});q.querySelectorAll('.sol').forEach(s=>s.remove());q.querySelectorAll('svg.rev').forEach(s=>s.classList.remove('rev','go'));q.querySelector('.sc').textContent='';resetSol(q);delete S.unl[qid(q)];save();updScore();updLocks()}
+});
+function mark(g){g.classList.remove('ok','bad');g.querySelectorAll('.gok,.gbad').forEach(x=>x.classList.remove('gok','gbad'));S.v[g.dataset.k]=getVal(g);delete S.res[g.dataset.k];save()}
+function replay(s){s.classList.remove('go');void s.getBoundingClientRect();s.classList.add('go')}
+
+/* ---------- speech ---------- */
+const SUP='⁰¹²³⁴⁵⁶⁷⁸⁹';
+function mathSpeak(t){
+ t=t.replace(/([0-9)\]}⁰¹²³⁴⁵⁶⁷⁸⁹]\s*)=/g,'$1,=');
+ t=t.replace(/\b(1\d{3}|[5-9]\d{2})\s*[–-]\s*(c\.\s*)?(1\d{3}|[5-9]\d{2})\b/g,(m,a,c,b)=>`${a} to ${c?'about ':''}${b}`);
+ t=t.replace(/\s[·–—]\s+(?=[A-Za-z“"‘])/g,', ').replace(/—/g,', ');
+ t=t.replace(/\((\d{3,4})\)/g,', $1,').replace(/\(([^()]*[A-Za-z]{2,}[^()]*)\)/g,', $1,');
+ t=t.replace(/\{([^{}]*,[^{}]*)\}/g,' the set $1 ').replace(/\.\.\.|…/g,' and so on ');
+ t=t.replace(/•/g,' ').replace(/(\d)\s*\/\s*(\d)/g,'$1 over $2').replace(/π/g,' pi ').replace(/∞/g,' infinity ').replace(/^\s*=/,' This equals ').replace(/\n\s*=/g,'\n This equals ');
+ t=t.replace(/([0-9)\]}⁰¹²³⁴⁵⁶⁷⁸⁹])[ \t]+\.[ \t]+(?=[–−+(\[{\d√])/g,'$1 × ').replace(/([0-9)\]}⁰¹²³⁴⁵⁶⁷⁸⁹])[ \t]*:[ \t]*(?=[–−+(\[{\d√])/g,'$1 ÷ ');
+ t=t.replace(/[“"‘]((?:[\s+\-–×÷.:]|and)+)[”"’]/g,(m,x)=>' '+x.trim().split(/\s+/).map(c=>({'+':'plus','–':'minus','-':'minus','×':'times','.':'dot','÷':'division',':':'colon'}[c]||c)).join(' ')+(/and/.test(x)?' signs ':' sign '));
+ t=t.replace(/\(\s*[–−]\s*\)/g,' negative ').replace(/\(\s*\+\s*\)/g,' positive ');
+ t=t.replace(/²√/g,'√');
+ let o='';const isB=c=>/[0-9)\]}⁰-⁹²³¹]/.test(c);
+ for(let i=0;i<t.length;i++){const c=t[i];if(c==='–'||c==='−'||c==='+'){const pv=o.replace(/\s+$/,'').slice(-1);const bin=isB(pv);o+=c==='+'?(bin?' plus ':' positive '):(bin?' minus ':' negative ');}else o+=c}
+ t=o;
+ t=t.replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]+/g,m=>'^'+[...m].map(c=>SUP.indexOf(c)).join(''));
+ t=t.replace(/\^(\d+)/g,(m,n)=>n==='2'?' squared ':n==='3'?' cubed ':` to the power of ${n} `).replace(/\^/g,'');
+ t=t.replace(/√\s*(\d+)/g,'square root of $1').replace(/√\s*\(/g,'square root of (').replace(/√\s*(negative|positive)/g,'square root of $1').replace(/√/g,' square root ');
+ t=t.replace(/[×·]/g,' times ').replace(/÷/g,' divided by ');
+ t=t.replace(/=/g,' equals ').replace(/\(/g,' open bracket ').replace(/\)/g,' close bracket ').replace(/\[/g,' open square bracket ').replace(/\]/g,' close square bracket ').replace(/\{/g,' open curly bracket ').replace(/\}/g,' close curly bracket ');
+ t=t.replace(/[“”"⟶⟵→←↑↓…]/g,' ').replace(/;/g,',').replace(/›/g,' is greater than ').replace(/‹/g,' is less than ');
+ return t.replace(/\n/g,'. ').replace(/([.,]\s*),/g,'$1').replace(/,\s*\./g,'.').replace(/^[\s,.]+/,'').replace(/\s+([.,])/g,'$1').replace(/\.(\s*\.)+/g,'.').replace(/\s{2,}/g,' ').trim();
+}
+function boxText(el){
+ const c=el.cloneNode(true);c.querySelectorAll('.bsay,.hsay,.psay,.csay,button,.nosay,.mini').forEach(x=>x.remove());c.querySelectorAll('svg').forEach(x=>x.replaceWith('\n'));
+ c.querySelectorAll('input').forEach(x=>x.replaceWith(' blank '));
+ c.querySelectorAll('.fr').forEach(x=>{const s=x.children;x.replaceWith(` ${s[0].textContent} over ${s[1].textContent} `)});
+ c.querySelectorAll('sup').forEach(x=>{const v=x.textContent.trim();x.replaceWith(/^\d+$/.test(v)?[...v].map(d=>SUP[d]).join(''):v==='+'?' plus ':/[–−-]/.test(v)?' minus ':v)});
+ [...c.querySelectorAll('.rad')].reverse().forEach(x=>{const ri=x.querySelector('.ri').textContent.trim();x.replaceWith(/[+–×÷:·.\s]/.test(ri)?` √(${ri}) `:` √${ri} `)});
+ c.querySelectorAll('br').forEach(x=>x.replaceWith('\n'));c.querySelectorAll('h1,h2,h3,h4,h5,li,div,p,td').forEach(x=>x.append('\n'));
+ return mathSpeak(c.textContent.replace(/^\s*(Example|RULE|INFO|CAUTION|HINT|Solution)\s*[:;]/,'$1. '));
+}
+let voice=null;function pickVoice(){try{const v=speechSynthesis.getVoices().filter(v=>/^en[-_]/i.test(v.lang));voice=v.find(x=>/en[-_]US/i.test(x.lang)&&/Google|Samantha|Natural|Aria|Jenny/i.test(x.name))||v.find(x=>/en[-_]US/i.test(x.lang))||v[0]||null}catch(e){}}
+try{pickVoice();speechSynthesis.onvoiceschanged=pickVoice}catch(e){}
+let qTok=0,qBtn=null,qPos=null;
+function markRes(){document.querySelectorAll('[data-lk]').forEach(b=>b.classList.toggle('hasres',(S.ls[b.dataset.lk]||0)>0))}
+function clearHi(){document.querySelectorAll('.now,.talk').forEach(x=>x.classList.remove('now','talk'))}
+function stopTalk(){qTok++;try{speechSynthesis.cancel()}catch(e){}clearHi();
+ if(qPos){if(qPos.i>0&&qPos.i<qPos.n)S.ls[qPos.key]=qPos.i;else delete S.ls[qPos.key];save();markRes()}qPos=null;
+ if(qBtn){qBtn.innerHTML=qBtn.dataset.ic;qBtn.classList.remove('on')}qBtn=null}
+function splitLines(box){
+ if(!box.dataset.split){const groups=[[]];[...box.childNodes].forEach(n=>{if(n.nodeType===1&&n.classList.contains('bsay'))return;if(n.nodeName==='BR'){groups.push([]);n.remove()}else groups[groups.length-1].push(n)});
+  groups.filter(g=>g.length).forEach((g,i,a)=>{const sp=document.createElement('span');sp.className='ln';g[0].before(sp);g.forEach(n=>sp.appendChild(n));if(i<a.length-1)sp.after(document.createElement('br'))});box.dataset.split='1'}
+ return [...box.querySelectorAll(':scope>.ln')];
+}
+function itemsFor(el,scroll){if(el.classList.contains('box'))return splitLines(el).map(s=>({el:s,box:el,text:boxText(s),scroll}));return [{el,text:boxText(el),scroll}]}
+const HSEL='h2.h1,h3.h2,h4.h3';
+function sectionItems(h){const out=itemsFor(h,true);let n=h.nextElementSibling;while(n&&!n.matches(HSEL+',.q,.exh')){if(!n.matches('svg,.cap,.underl')&&n.textContent.trim())out.push(...itemsFor(n,true));n=n.nextElementSibling}return out}
+const PSEL='h2.h1,h3.h2,h4.h3,p,.box,.cbox,.mm h2,.mm .yrs,.facts,.mm li,.two>div,.diag,.ctitle,.copy,.kwr>div:last-child';
+function readable(pg){return [...pg.querySelectorAll(PSEL)].filter(el=>!el.closest('.q,.cont,.ak,.cover,.back')&&!(el.parentElement.closest(PSEL)&&pg.contains(el.parentElement.closest(PSEL)))&&el.textContent.trim())}
+function pageItems(pg){return readable(pg).flatMap(el=>itemsFor(el,true))}
+function play(items,btn,start=0){
+ stopTalk();if(!('speechSynthesis' in window)){alert('Your browser does not support speech.');return}
+ items=items.filter(x=>x.text&&/[A-Za-z0-9]/.test(x.text));if(!items.length)return;const n=items.length;
+ const tok=++qTok;qBtn=btn;const key=btn&&btn.dataset.lk;qPos=key&&n>1?{key,i:start,n}:null;
+ if(btn){btn.dataset.ic=btn.dataset.ic||btn.innerHTML;btn.innerHTML=btn.classList.contains('psay')?'⏹ Stop':'⏹';btn.classList.add('on')}
+ const base=+(document.getElementById('rate')?.value||.9);let i=start;
+ const next=()=>{if(tok!==qTok)return;clearHi();if(i>=n){if(qPos)qPos.i=n;stopTalk();return}
+  if(qPos)qPos.i=i;const it=items[i++];if(btn&&btn.classList.contains('psay')&&n>1)btn.innerHTML=`⏹ ${i}/${n}`;it.el.classList.add('now');if(it.box)it.box.classList.add('talk');
+  if(it.scroll){const r=it.el.getBoundingClientRect();if(r.top<70||r.bottom>innerHeight-90)it.el.scrollIntoView({behavior:'smooth',block:'center'})}
+  const ops=(it.text.match(/\b(plus|minus|times|divided|equals|squared|cubed|root|negative|positive|power|bracket)\b/g)||[]).length;
+  const rate=ops>=3?base*.82:base;
+  const parts=it.text.split(/(?<=[.!?])\s+/).filter(x=>/[A-Za-z0-9]/.test(x));let done=false;
+  parts.forEach((p,k)=>{const u=new SpeechSynthesisUtterance(p);u.lang='en-US';if(voice)u.voice=voice;u.rate=rate;
+   if(k===parts.length-1){u.onend=u.onerror=()=>{if(done)return;done=true;if(tok===qTok)setTimeout(next,ops>=3?500:280)}}speechSynthesis.speak(u)});
+ };
+ next();
+}
+document.querySelectorAll('.box').forEach(b=>b.insertAdjacentHTML('beforeend','<button class="bsay" aria-label="Listen" title="Listen">🔊</button>'));
+document.querySelectorAll('.cbox').forEach(b=>b.insertAdjacentHTML('beforeend','<button class="bsay csay" aria-label="Listen" title="Listen">🔊</button>'));
+document.querySelectorAll('.pc '+HSEL).forEach(h=>{if(!h.closest('.q'))h.insertAdjacentHTML('beforeend','<button class="hsay" aria-label="Listen to this part" title="Listen to this part">🔊</button>')});
+const RP=document.createElement('div');RP.id='rpop';RP.hidden=true;document.body.appendChild(RP);
+function askResume(b,items,pos){RP.innerHTML=`<div class="rpt">You stopped at part ${pos+1} of ${items.length}</div><button data-r="c">▶ Continue where I left</button><button data-r="s">↺ Listen from the start</button>`;RP.hidden=false;
+ const rc=b.getBoundingClientRect(),w=230;RP.style.left=Math.max(8,Math.min(innerWidth-w-8,rc.left+rc.width/2-w/2))+'px';RP.style.top=(rc.bottom+130>innerHeight?Math.max(8,rc.top-128):rc.bottom+8)+'px';
+ RP.onclick=e=>{const x=e.target.closest('button');if(!x)return;RP.hidden=true;play(items,b,x.dataset.r==='c'?pos:0)}}
+document.addEventListener('pointerdown',e=>{if(!RP.hidden&&!e.target.closest('#rpop'))RP.hidden=true},true);
+addEventListener('scroll',()=>{RP.hidden=true},{passive:true});
+document.querySelectorAll('.page').forEach(pg=>{if(!readable(pg).length)return;const btn='<button class="psay" title="Read this page aloud">🔊 Listen</button>';const rt=pg.querySelector('.band .rt');if(rt)rt.insertAdjacentHTML('afterbegin',btn);else{const cc=pg.querySelector('.ccov');if(cc)cc.insertAdjacentHTML('afterbegin',btn)}});
+
+
+
+/* ---------- step-by-step solver (follows the book: signs → B → E → D M → A S) ---------- */
+const gcdN=(a,b)=>{a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b]}return a||1};
+const Rn=(n,d=1)=>{if(d<0){n=-n;d=-d}const g=gcdN(n,d);return{n:n/g,d:d/g}};
+const rAdd=(a,b)=>Rn(a.n*b.d+b.n*a.d,a.d*b.d),rSub=(a,b)=>Rn(a.n*b.d-b.n*a.d,a.d*b.d),rMul=(a,b)=>Rn(a.n*b.n,a.d*b.d),rDiv=(a,b)=>Rn(a.n*b.d,a.d*b.n);
+const rPow=(a,e)=>{let v=Rn(1);for(let i=0;i<e;i++)v=rMul(v,a);return v};
+const rSqrt=a=>{const q=Math.round(Math.sqrt(a.n));return Rn(q*q===a.n?q:NaN)};
+const rAbs=a=>Rn(Math.abs(a.n),a.d),rNeg=a=>Rn(-a.n,a.d),rCmp=(a,b)=>a.n*b.d-b.n*a.d;
+const fmtH=a=>(a.n<0?'–':'')+Math.abs(a.n)+(a.d!==1?'/'+a.d:'');
+const sup=n=>String(n).split('').map(d=>SUP[d]).join('');
+const CLOSE={'(':')','[':']','{':'}'};
+const isMD=t=>t&&t.t==='o'&&(t.o==='*'||t.o==='/');
+const isAS=t=>t&&t.t==='o'&&(t.o==='+'||t.o==='-');
+function lex(src){
+ const s=src.replace(/[−—-]/g,'–').replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]+/g,m=>'^'+[...m].map(c=>SUP.indexOf(c)).join(''));
+ const T=[];let i=0;const val=()=>{const p=T[T.length-1];return p&&(p.t==='n'||p.t===')'||p.t==='^')};
+ while(i<s.length){const c=s[i];
+  if(/\s/.test(c)){i++;continue}
+  if(/\d/.test(c)){let j=i;while(j<s.length&&/\d/.test(s[j]))j++;T.push({t:'n',v:Rn(+s.slice(i,j))});i=j;continue}
+  if(c==='^'){let j=i+1;while(/\d/.test(s[j]))j++;T.push({t:'^',e:+s.slice(i+1,j)});i=j;continue}
+  if(c==='√'){T.push({t:'r'});i++;continue}
+  if('([{'.includes(c)){T.push({t:'(',s:c});i++;continue}
+  if(')]}'.includes(c)){T.push({t:')',s:c});i++;continue}
+  if(c==='–'||c==='+'){T.push(val()?{t:'o',o:c==='+'?'+':'-',s:c}:{t:'u',o:c==='+'?'+':'-'});i++;continue}
+  if(c==='×'||c==='·'||c==='*'){T.push({t:'o',o:'*',s:c==='·'?'·':'×'});i++;continue}
+  if(c==='.'){T.push({t:'o',o:'*',s:'·'});i++;continue}
+  if(c===':'||c==='÷'||c==='/'){T.push({t:'o',o:'/',s:c==='/'?'÷':c});i++;continue}
+  i++}
+ const R=[];for(let k=0;k<T.length;k++){const t=T[k];
+  if(t.t==='u'&&T[k+1]&&T[k+1].t==='n'){const n=T[k+1].v;R.push({t:'n',v:t.o==='-'?rNeg(n):n,sg:t.o});k++}
+  else if(t.t==='u'){R.push({t:'n',v:Rn(t.o==='-'?-1:1)});R.push({t:'o',o:'*',s:'×'})}
+  else R.push(t)}
+ return R}
+function numS(t,nx){const v=t.v,ng=v.n<0;let s=(ng?'–':(t.sg==='+'?'+':''))+Math.abs(v.n)+(v.d!==1?'/'+v.d:'');if(ng&&nx&&nx.t==='^')s='('+s+')';return s}
+function show(T){let o='';for(let k=0;k<T.length;k++){const t=T[k];
+  if(t.t==='n')o+=numS(t,T[k+1]);
+  else if(t.t==='o')o+=' '+t.s+' ';
+  else if(t.t==='^')o+=sup(t.e);
+  else if(t.t==='r'){const nx=T[k+1];if(nx&&nx.t==='n'){o+=r(numS(nx));k++}else if(nx&&nx.t==='('){let d=0,j=k+1;for(;j<T.length;j++){if(T[j].t==='(')d++;if(T[j].t===')'){d--;if(!d)break}}o+=r(show(T.slice(k+2,j)));k=j}else o+='√'}
+  else if(t.t==='(')o+=t.s+' ';else if(t.t===')')o+=' '+t.s}
+ return o.replace(/\s+/g,' ').replace(/([(\[{]) /g,'$1').replace(/ ([)\]}])/g,'$1').trim()}
+function unwrap(T){let ch=true;while(ch){ch=false;for(let k=0;k+2<T.length;k++){if(T[k].t==='('&&T[k+1].t==='n'&&T[k+2].t===')'){T=[...T.slice(0,k),T[k+1],...T.slice(k+3)];ch=true;break}}}return T}
+function innermost(T){const res=[];for(let k=0;k<T.length;k++){if(T[k].t!=='(')continue;let j=k+1,ok=true;while(j<T.length&&T[j].t!==')'){if(T[j].t==='('){ok=false;break}j++}if(ok)res.push([k,j])}return res}
+function normSigns(T){const notes=new Set(),R=[];
+ for(let k=0;k<T.length;k++){const t=T[k],n=T[k+1];
+  if(isAS(t)&&n&&n.t==='n'&&n.sg){const ng=n.v.n<0;const pv={t:'n',v:ng?rNeg(n.v):n.v};let o;
+   if(t.o==='+'&&ng){o='-';notes.add('“+ –” becomes “–”.')}else if(t.o==='-'&&ng){o='+';notes.add('“– –” becomes “+”.')}else if(t.o==='-'){o='-';notes.add('“– +” becomes “–”.')}else{o='+';notes.add('“+ +” becomes “+”.')}
+   R.push({t:'o',o,s:o==='+'?'+':'–'},pv);k++;continue}
+  if(isMD(t)&&n&&n.t==='n'&&n.sg==='+'){R.push(t,{t:'n',v:n.v});k++;continue}
+  R.push(t)}
+ return{T:R,note:[...notes]}}
+function phaseE(T){const notes=[],R=[];
+ for(let k=0;k<T.length;k++){const t=T[k];
+  if(t.t==='r'&&T[k+1]&&T[k+1].t==='n'){const n=T[k+1].v,q=rSqrt(n);notes.push(`${r(fmtH(n))} = ${fmtH(q)}, because ${fmtH(q)}² = ${fmtH(n)}`);R.push({t:'n',v:q});k++;continue}
+  if(t.t==='n'&&T[k+1]&&T[k+1].t==='^'){const e=T[k+1].e,v=rPow(t.v,e),b=numS(t,T[k+1]);notes.push(e>=2&&e<=7?`${b}${sup(e)} = ${Array(e).fill(b).join(' × ')} = ${fmtH(v)}`:`${b}${sup(e)} = ${fmtH(v)}`);R.push({t:'n',v});k++;continue}
+  R.push(t)}
+ return{T:R,note:notes,tag:'E · Exponentials and radicals first'}}
+function phaseDM(T){const notes=[],R=[];let k=0;
+ while(k<T.length){const t=T[k];
+  if(t.t==='n'&&isMD(T[k+1])){let acc=t.v;const seq=[];let j=k+1;
+   while(isMD(T[j])&&T[j+1]&&T[j+1].t==='n'){const op=T[j],b=T[j+1].v,res=op.o==='*'?rMul(acc,b):rDiv(acc,b);seq.push({a:acc,op,b,res});acc=res;j+=2}
+   const whole=k===0&&j>=T.length;
+   if(seq.length>1)notes.push('Left to right: '+seq.map(x=>`${fmtH(x.a)} ${x.op.s} ${fmtH(x.b)} = ${fmtH(x.res)}`).join(', '));
+   else if(!whole)notes.push(`${fmtH(seq[0].a)} ${seq[0].op.s} ${fmtH(seq[0].b)} = ${fmtH(seq[0].res)}`);
+   seq.forEach(x=>{const na=x.a.n<0,nb=x.b.n<0;
+    if(na||nb){const same=na===nb;notes.push(`${fmtH(x.a)} ${x.op.s} ${fmtH(x.b)}: ${same?'same signs, so the answer is positive':'different signs, so the answer is negative'}. ${fmtH(rAbs(x.a))} ${x.op.s} ${fmtH(rAbs(x.b))} = ${fmtH(rAbs(x.res))}`)}
+    if(x.op.o==='/'&&x.res.d!==1)notes.push(`${fmtH(x.a)} ${x.op.s} ${fmtH(x.b)} is not a whole number: write it as a fraction ${fmtH(x.a)}/${fmtH(x.b)} = ${fmtH(x.res)}`)});
+   R.push({t:'n',v:acc});k=j;continue}
+  R.push(t);k++}
+ return{T:R,note:notes,tag:'D M · Division and multiplication, left to right'}}
+function phaseAS(T){let acc=T[0].v;const seq=[];
+ for(let k=1;k<T.length;k+=2){const op=T[k],b=T[k+1].v,res=op.o==='+'?rAdd(acc,b):rSub(acc,b);seq.push({a:acc,op,b,res});acc=res}
+ const notes=[];
+ if(seq.length>1)notes.push('Left to right: '+seq.map(x=>`${fmtH(x.a)} ${x.op.s} ${fmtH(x.b)} = ${fmtH(x.res)}`).join(', '));
+ else if(seq.length===1){const x=seq[0],a=x.a,b=x.op.o==='+'?x.b:rNeg(x.b),an=a.n<0,bn=b.n<0;
+  if(an&&bn)notes.push(`Both numbers are negative: add ${fmtH(rAbs(a))} + ${fmtH(rAbs(b))} = ${fmtH(rAbs(x.res))} and write “–” in front.`);
+  else if(an||bn&&(x.res.n<0||x.b.n<0)){const big=rCmp(rAbs(a),rAbs(b))>=0?a:b,small=big===a?b:a;
+   notes.push(`${fmtH(rAbs(big))} is bigger than ${fmtH(rAbs(small))}, so the answer takes the sign of ${fmtH(big)}. ${fmtH(rAbs(big))} – ${fmtH(rAbs(small))} = ${fmtH(rAbs(x.res))}`)}}
+ return{T:[{t:'n',v:acc}],note:notes,tag:'A S · Addition and subtraction'}}
+function flat(T){T=normSigns(T).T;const chain=[];let g=0;
+ while(!(T.length===1&&T[0].t==='n')&&g++<20){const p=T.some(t=>t.t==='r'||t.t==='^')?phaseE(T):T.some(isMD)?phaseDM(T):phaseAS(T);T=p.T;chain.push(show(T))}
+ return{chain,v:T[0].v}}
+function phaseB(T){const notes=[];const G=innermost(T);
+ for(let g=G.length-1;g>=0;g--){const[k,j]=G[g];const inner=T.slice(k+1,j);const F=flat(inner);
+  if(F.chain.length)notes.unshift(`Inside the bracket: ${show(inner)} = ${F.chain.join(' = ')}`);
+  T=[...T.slice(0,k),{t:'n',v:F.v},...T.slice(j+1)]}
+ return{T,note:notes,tag:'B · Brackets first'}}
+function solve(src){let T=lex(src);const start=show(T),L=[];
+ const n0=normSigns(T);if(n0.note.length){T=n0.T;L.push({e:show(T),n:n0.note,tag:'Consecutive signs'})}
+ let g=0;while(g++<30){T=unwrap(T);if(T.length===1&&T[0].t==='n')break;
+  const p=T.some(t=>t.t==='(')?phaseB(T):T.some(t=>t.t==='r'||t.t==='^')?phaseE(T):T.some(isMD)?phaseDM(T):phaseAS(T);
+  T=p.T;L.push({e:show(T),n:p.note,tag:p.tag})}
+ return{start,L,v:T[0].v}}
+function solLines(R){const ans=fmtH(R.v);
+ if(R.L.length===1&&!R.L[0].n.length)return[`${R.start} = ${R.L[0].e}`,`<b>Answer: ${ans}</b>`];
+ const out=[R.start],tags=R.L.length>1;
+ R.L.forEach(x=>{if(tags)out.push(`<span class="stp">${x.tag}</span>`);x.n.forEach(m=>out.push('• '+m));out.push('= '+x.e)});
+ out.push(`<b>Answer: ${ans}</b>`);return out}
+function feats(src){const T=lex(src);const md=T.filter(isMD),as=T.filter(isAS);
+ return{T,md,as,hasG:T.some(t=>t.t==='('),hasE:T.some(t=>t.t==='^'||t.t==='r'),
+  cons:T.some((t,k)=>isAS(t)&&T[k+1]&&T[k+1].t==='n'&&T[k+1].sg),
+  negMD:T.some((t,k)=>isMD(t)&&((T[k-1]&&T[k-1].t==='n'&&T[k-1].v.n<0)||(T[k+1]&&T[k+1].t==='n'&&T[k+1].v.n<0))),ops:md.length+as.length}}
+function isHard(src){if(!src)return false;const f=feats(src);return(f.hasG&&f.ops>=1)||(f.hasE&&f.ops>=1)||(f.md.length&&f.as.length)||new Set(f.md.map(t=>t.o)).size>1||f.ops>=3}
+function hintHTML(it){const f=feats(it._src),T=unwrap(f.T),L=[];
+ if(T.some(t=>t.t==='(')){const g=innermost(T)[0];L.push(`<b>B</b> Brackets hold the first position. Start inside the innermost bracket: ${show(T.slice(g[0],g[1]+1))}`)}
+ if(f.hasE){const ex=[];T.forEach((t,k)=>{
+   if(t.t==='n'&&T[k+1]&&T[k+1].t==='^'){const b=numS(t,T[k+1]),e=T[k+1].e;ex.push(`${b}${sup(e)} means ${Array(e).fill(b).join(' × ')}`+(Math.abs(t.v.n)*e!==Math.abs(rPow(t.v,e).n)?` (not ${b} × ${e})`:''))}
+   if(t.t==='r'&&T[k+1]&&T[k+1].t==='n')ex.push(`${r(numS(T[k+1]))} asks: which number’s square is ${numS(T[k+1])}?`)});
+  L.push('<b>E</b> Calculate exponentials and radicals before ×, ÷, + and –'+(ex.length?'. '+ex.slice(0,3).join('. '):'')+'.')}
+ if(new Set(f.md.map(t=>t.o)).size>1||f.md.length>=2)L.push('<b>D M</b> Division and multiplication are given consecutively: work from left to right (Type 2). Starting from the right gives a wrong answer.');
+ if(f.md.length&&f.as.length)L.push('Calculate × and ÷ before + and – (Type 3).');
+ if(!f.md.length&&!f.hasE&&!f.hasG&&f.as.length>=2)L.push('Only + and –: you can go from left to right (Type 1).');
+ if(f.cons)L.push('Consecutive signs: write “+” in place of “– –”, and “–” in place of “+ –” or “– +”.');
+ if(f.negMD)L.push('Sign rule: (–) · (–) = (+), and (–) · (+) = (–).');
+ L.push('Remember BEDMAS: Brackets, then Exponentials and radicals, then Division and Multiplication, then Addition and Subtraction.');
+ return`<div class="box inf hintbox"><b>HINT:</b> ${L.join('<br>').replace(/\?\./g,'?')}<button class="bsay" aria-label="Listen">🔊</button></div>`}
+function srcOf(ex){const c=ex.cloneNode(true);c.querySelectorAll('input,button').forEach(x=>x.remove());
+ c.querySelectorAll('.fr').forEach(x=>{const q=x.children;x.replaceWith(`${q[0].textContent} ÷ ${q[1].textContent}`)});
+ [...c.querySelectorAll('.rad')].reverse().forEach(x=>x.replaceWith('√('+x.querySelector('.ri').textContent+')'));
+ return c.textContent.replace(/=\s*$/,'').replace(/\s+/g,' ').trim()}
+const CUSTOM={
+ 'Chapter 1 · Exercise 1|1':[
+  'TRUE.\nWhole numbers start from 0, natural numbers start from 1.\nThe only difference between them is the number 0.',
+  'FALSE.\nThe smallest whole number is 0, not 1.\nW = {0, 1, 2, 3, …}',
+  'FALSE.\nIntegers go up to positive infinity, so there is no biggest integer.\n–1 is the biggest NEGATIVE integer.',
+  'FALSE.\nPositive integers have no sign or a “+” sign.\nNumbers with a “–” sign are negative integers.',
+  'TRUE.\nNatural numbers and positive integers both start from 1 and go up to positive infinity.',
+  'TRUE.\nZ⁻ = {…, –3, –2, –1}.\n–1 is the closest negative integer to 0, so it is the biggest.',
+  'TRUE.\nOn the number line –7 is on the right side of –19.\nThe number on the right is bigger, so –7 is bigger than –19.',
+  'FALSE.\nEvery positive number is bigger than every negative number.\n71 is bigger than –11.',
+  'TRUE.\nPositive integers are the same as natural numbers, and natural numbers are also called counting numbers.',
+  'TRUE.\n0 is in W = {0, 1, 2, …}.\n0 is neither positive nor negative, so 0 is neutral.',
+  'FALSE.\nNatural numbers are represented by “N”.\n“W” represents whole numbers.'],
+ 'Chapter 1 · Exercise 1|2':[
+  '0 is a whole number and an integer: W, Z.\n0 is not a natural number, because N starts from 1.\n0 is neither positive nor negative, so it is not in Z⁺ or Z⁻.',
+  '–5 has a “–” sign, so it is a negative integer: Z, Z⁻.\nNatural numbers and whole numbers are never negative.',
+  '71 is a positive counting number, so it belongs to all of them: N, W, Z, Z⁺.',
+  '–88 has a “–” sign, so it is a negative integer: Z, Z⁻.'],
+ 'Chapter 1 · Exercise 1|3':[
+  '0 is an integer and also a whole number, because W starts from 0.',
+  'Whole numbers are represented by the capital letter W.',
+  'Positive integers start from 1, whole numbers start from 0.\nSo the difference between them is 0.',
+  'The biggest negative integer is –1, because it is the closest negative integer to 0.',
+  'Z⁺ represents positive integers: {1, 2, 3, …}',
+  'Integers start from negative infinity and go up to positive infinity.',
+  'Natural numbers are also called counting numbers.'],
+ 'Chapter 3 · Exercise 3|1':[
+  'The small box at the top left of the root sign is the degree of root.\nIf it is empty, the degree is 2: square root.',
+  'The number under the root sign is the inside number.'],
+ 'Chapter 3 · Exercise 3|2':[
+  'A square number is a number multiplied by itself.\n1 = 1², 4 = 2², 16 = 4², 25 = 5², 36 = 6², 49 = 7², 64 = 8²\n81 = 9², 100 = 10², 121 = 11², 144 = 12², 169 = 13², 196 = 14², 225 = 15²\nAll the other numbers in the table are not square numbers.']};
+function solHTML(it){let lines;const k=it.dataset.kind;
+ if(k==='custom')lines=String(it._sol).split('\n');
+ else if(k==='expform'){const p=it._src.replace(/\s/g,'').split('×');lines=[`${p[0]} is multiplied by itself ${p.length} times.`,`The base is ${p[0]} and the power is ${p.length}.`,`<b>Answer: ${p[0]}${sup(p.length)}</b>`]}
+ else if(k==='rblank'){const v=+it.querySelector('.ex').textContent.match(/=\s*(\d+)/)[1];lines=[`Which number’s square root is ${v}?`,`${v}² = ${v} × ${v} = ${v*v}`,`So ${r(v*v)} = ${v}.`,`<b>Answer: ${v*v}</b>`]}
+ else{const R=solve(it._src);lines=solLines(R);
+  if(it._frac){const m=it._src.split('÷');lines.unshift(`${fr(m[0].trim(),m[1].trim())} means ${it._src}.`)}
+  if(k==='nline'){const a=lex(it._src)[0].v,res=R.v,st=Math.abs(res.n-a.n);lines.splice(lines.length-1,0,`On the number line: start at ${fmtH(a)} and go ${st} step${st===1?'':'s'} to the ${res.n>a.n?'right':'left'}. You stop at ${fmtH(res)}.`)}}
+ return`<div class="box exm solbox"><b>Solution:</b> ${lines.join('<br>')}<button class="bsay" aria-label="Listen">🔊</button></div>`}
+function togglePanel(b){const it=b.closest('.it');const pan=it.querySelector(':scope>.pan');const mode=b.classList.contains('tbh')?'h':'s';
+ if(!pan.hidden&&pan.dataset.mode===mode){if(qBtn&&pan.contains(qBtn))stopTalk();pan.hidden=true;it.classList.remove('open');b.classList.remove('act');return}
+ if(qBtn&&pan.contains(qBtn))stopTalk();
+ pan.innerHTML=mode==='h'?hintHTML(it):solHTML(it);pan.dataset.mode=mode;pan.hidden=false;it.classList.add('open');
+ it.querySelectorAll(':scope>.itx>.tb').forEach(x=>x.classList.toggle('act',x===b))}
+function revealSol(q,auto){q.querySelectorAll('.it').forEach(it=>{const b=it.querySelector(':scope>.itx>.tbs');if(!b)return;b.hidden=false;
+ if(auto){const gs=[...it.querySelectorAll('.g')];if(gs.some(g=>getVal(g)!=='')&&gs.some(g=>g.classList.contains('bad'))){const pan=it.querySelector(':scope>.pan');if(pan.hidden||pan.dataset.mode!=='s')togglePanel(b)}}})}
+function resetSol(q){q.querySelectorAll('.it').forEach(it=>{const b=it.querySelector(':scope>.itx>.tbs');if(b)b.hidden=true;const pan=it.querySelector(':scope>.pan');if(pan){pan.hidden=true;pan.innerHTML=''}it.classList.remove('open');it.querySelectorAll('.tb.act').forEach(x=>x.classList.remove('act'))})}
+document.querySelectorAll('.q').forEach(q=>{const key=q.dataset.ex+'|'+q.dataset.n;
+ let units=[...q.querySelectorAll('.it')];
+ if(!units.length){units=[...q.querySelectorAll('.grid')].map(gr=>{const d=document.createElement('div');d.className='it gridsol';gr.after(d);return d})}
+ units.forEach((it,idx)=>{let kind='calc',src='';
+  if(CUSTOM[key]){kind='custom';it._sol=CUSTOM[key][idx]||''}
+  else{const ex=it.querySelector('.ex');src=ex?srcOf(ex):'';it._frac=!!(ex&&ex.querySelector('.fr'));
+   if(it.querySelector('.rad input'))kind='rblank';
+   else if(/^\d+(×\d+)+$/.test(src.replace(/\s/g,'')))kind='expform';
+   else if(it.classList.contains('nlit'))kind='nline'}
+  it.dataset.kind=kind;it._src=src;
+  const hard=(kind==='calc'||kind==='nline')&&isHard(src);
+  it.insertAdjacentHTML('beforeend',`<div class="itx">${hard?'<button class="tb tbh">💡 Hint</button>':''}<button class="tb tbs" hidden>📘 Solution</button></div><div class="pan" hidden></div>`)})});
+document.querySelectorAll('.q').forEach(q=>{if(S.unl[qid(q)])revealSol(q,false)});updLocks();
+window.__verify=()=>{const bad=[];document.querySelectorAll('.it').forEach(it=>{const k=it.dataset.kind;if(k!=='calc'&&k!=='nline')return;const g=it.querySelector('input.g');if(!g)return;
+ let v;try{v=fmtH(solve(it._src).v)}catch(e){v='ERR '+e.message}const ans=g.dataset.ans.split('|').map(a=>norm(a));if(!ans.includes(norm(v)))bad.push(it._src+' → '+v+' (expected '+g.dataset.ans+')')});return bad};
+/* ---------- animated mathematician stories ---------- */
+const STORIES=(()=>{
+ let seed=11;const rr=()=>{seed=(seed*9301+49297)%233280;return seed/233280};
+ const A=(cls,d,inner,ex='')=>`<g class="${cls}" style="--d:${d}s;${ex}">${inner}</g>`;
+ const at=(x,y,inner,sc=1)=>`<g transform="translate(${x} ${y})${sc!==1?` scale(${sc})`:''}">${inner}</g>`;
+ const T=(x,y,t,o={})=>`<text x="${x}" y="${y}" font-size="${o.s||28}" fill="${o.c||'#fff'}" font-family="'Lilita One',Nunito,sans-serif" text-anchor="${o.a||'middle'}"${o.st?` stroke="${o.st}" stroke-width="${o.sw||4}" paint-order="stroke"`:''}>${t}</text>`;
+ const sky=(a,b)=>`<defs><linearGradient id="sk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient></defs><rect width="640" height="360" fill="url(#sk)"/>`;
+ const stars=(n,h=220)=>{let s='';for(let i=0;i<n;i++)s+=A('a-tw',-(rr()*2).toFixed(2),`<circle cx="${(rr()*640)|0}" cy="${(rr()*h)|0}" r="${(1+rr()*1.8).toFixed(1)}" fill="#fff"/>`,`--t:${(1.4+rr()*2).toFixed(1)}s`);return s};
+ const snow=n=>{let s='';for(let i=0;i<n;i++)s+=A('a-snow',-(rr()*7).toFixed(1),`<circle cx="${(rr()*640)|0}" cy="0" r="${(1.5+rr()*2.5).toFixed(1)}" fill="#fff" opacity=".85"/>`,`--t:${(5+rr()*4).toFixed(1)}s`);return s};
+ const bub=(x,y,w,t,d,o={})=>at(x,y,A('a-pop',d,`<rect x="${-w/2}" y="-26" width="${w}" height="52" rx="18" fill="${o.bg||'#fff'}" stroke="${o.st||'#333'}" stroke-width="2.5"/>${o.tail===false?'':`<path d="M${o.tx||-10} 25 L${o.tl||-24} 46 L${(o.tx||-10)+16} 25Z" fill="${o.bg||'#fff'}" stroke="${o.st||'#333'}" stroke-width="2.5" stroke-linejoin="round"/><rect x="${(o.tx||-10)-2}" y="20" width="20" height="7" fill="${o.bg||'#fff'}"/>`}${T(0,9,t,{s:o.s||22,c:o.c||'#222'})}`));
+ const think=(x,y,t,d)=>at(x,y,A('a-pop',d,`<circle cx="-34" cy="44" r="6" fill="#fff" stroke="#333" stroke-width="2"/><circle cx="-22" cy="30" r="9" fill="#fff" stroke="#333" stroke-width="2"/><ellipse cx="0" cy="0" rx="40" ry="28" fill="#fff" stroke="#333" stroke-width="2.5"/>${T(0,10,t,{s:26,c:'#1150b0'})}`));
+ function guy(x,y,sc,o={}){const coat=o.coat||'#2f6fe0',skin=o.skin||'#f2c7a5',hair=o.hair||'#4a3424';
+  const arm=o.arm==='up'?`<path d="M20 -44 L42 -86" stroke="${coat}" stroke-width="11" stroke-linecap="round"/><circle cx="43" cy="-89" r="6.5" fill="${skin}"/>`:o.arm==='book'?`<path d="M20 -44 L30 -30 L8 -24" stroke="${coat}" stroke-width="11" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="-6" y="-40" width="26" height="20" rx="2" fill="#c0392b" stroke="#7b241c" stroke-width="2"/>`:`<path d="M22 -44 L30 -8" stroke="${coat}" stroke-width="11" stroke-linecap="round"/>`;
+  const head=o.wig?`<path d="M-26 -78 Q-30 -36 -16 -32 L-15 -68 Q0 -84 15 -68 L16 -32 Q30 -36 26 -78 Q24 -102 0 -101 Q-24 -102 -26 -78Z" fill="${hair}"/>`:o.turban?`<ellipse cx="0" cy="-90" rx="25" ry="13" fill="${o.turban}"/><path d="M-23 -92 Q0 -122 23 -92Z" fill="${o.turban}"/><circle cx="0" cy="-104" r="4" fill="#ffd43b"/>`:`<path d="M-22 -80 Q-20 -101 0 -99 Q20 -101 22 -80 Q12 -91 0 -89 Q-12 -91 -22 -80Z" fill="${hair}"/>`;
+  return at(x,y,`<g class="${o.cls||''}" style="${o.st||''}"><rect x="-14" y="-12" width="11" height="42" rx="5" fill="#2b2b2b"/><rect x="3" y="-12" width="11" height="42" rx="5" fill="#2b2b2b"/><path d="M-26 -2 Q-29 -54 0 -56 Q29 -54 26 -2Z" fill="${coat}"/>${arm}<path d="M-22 -44 L-30 -8" stroke="${coat}" stroke-width="11" stroke-linecap="round"/><circle cx="0" cy="-74" r="22" fill="${skin}"/>${head}<circle cx="-8" cy="-76" r="2.7" fill="#222"/><circle cx="8" cy="-76" r="2.7" fill="#222"/>${o.beard?`<path d="M-19 -68 Q-14 -40 0 -38 Q14 -40 19 -68 Q10 -58 0 -58 Q-10 -58 -19 -68Z" fill="${o.beard}"/>`:`<path d="M-7 -64 Q0 -58 7 -64" stroke="#7a3b2e" stroke-width="2.3" fill="none" stroke-linecap="round"/>`}${o.mus?`<path d="M-11 -66 Q0 -71 11 -66" stroke="${hair}" stroke-width="3.2" fill="none" stroke-linecap="round"/>`:''}</g>`,sc)}
+ const ground=(c,y=300)=>`<rect y="${y}" width="640" height="${360-y}" fill="${c}"/>`;
+ const dome=x=>at(x,300,`<rect x="-28" y="-92" width="56" height="92" fill="#f1e3c4"/><rect x="-10" y="-40" width="20" height="40" fill="#b08968"/><path d="M-24 -92 Q-32 -124 0 -146 Q32 -124 24 -92Z" fill="#d4a017"/><rect x="-2" y="-170" width="4" height="26" fill="#d4a017"/><rect x="-8" y="-162" width="16" height="3" fill="#d4a017"/>`);
+ const house=(x,w,h,c,roof)=>at(x,300,`<rect x="${-w/2}" y="${-h}" width="${w}" height="${h}" fill="${c}"/><path d="M${-w/2-6} ${-h} L0 ${-h-w*.5} L${w/2+6} ${-h}Z" fill="${roof}"/><rect x="-8" y="${-h+16}" width="16" height="16" fill="#ffe8a3"/>`);
+ const wheel=(x,y)=>at(x,y,A('a-spin','0',`<circle r="13" fill="#333"/><circle r="9" fill="#777"/><path d="M-9 0H9M0 -9V9" stroke="#333" stroke-width="2.5"/>`,'--t:.9s'));
+ const book=(x,y,c,d)=>at(x,y,A('a-flt',d,`<rect x="-20" y="-14" width="40" height="28" rx="3" fill="${c}"/><rect x="-16" y="-10" width="32" height="4" fill="#fff8"/>`));
+ const coin=(x,y,c,t,d)=>at(x,y,A('a-pop',d,`<circle r="34" fill="${c}" stroke="#0003" stroke-width="5"/>${T(0,13,t,{s:40})}`));
+ const palm=x=>at(x,300,`<path d="M0 0 Q6 -60 -4 -120" stroke="#8d5524" stroke-width="10" fill="none"/>${[[-50,-140],[45,-145],[-40,-105],[42,-108],[0,-160]].map(([a,b])=>`<path d="M-4 -120 Q${a/2} ${b-10} ${a} ${b+20}" stroke="#2d6a4f" stroke-width="9" fill="none" stroke-linecap="round"/>`).join('')}`);
+ const C={},grid=(c)=>{let s='';for(let x=100;x<=540;x+=40)s+=`<line x1="${x}" y1="20" x2="${x}" y2="300" stroke="${c}"/>`;for(let y=20;y<=300;y+=40)s+=`<line x1="100" y1="${y}" x2="540" y2="${y}" stroke="${c}"/>`;return s};
+ C.cantor={title:'Georg Cantor – The man who counted infinity',color:'#0f6b35',scenes:[
+  {say:'Georg Cantor was born in 1845 in Saint Petersburg, Russia.',svg:sky('#14213d','#3d5a80')+stars(28,170)+`<circle cx="560" cy="60" r="28" fill="#f1faee"/>`+ground('#e9eef5')+dome(140)+dome(250)+house(360,90,110,'#d8e2dc','#7d8597')+dome(470)+house(560,70,80,'#ffe5d9','#9d0208')+snow(36)+at(320,90,A('a-pop',.6,`<rect x="-170" y="-34" width="340" height="62" rx="16" fill="#0009"/>${T(0,10,'Saint Petersburg · 1845',{s:30,c:'#ffd166'})}`))},
+  {say:'When he was eleven years old, his family moved from Russia to Germany.',svg:sky('#8ecae6','#e0fbfc')+`<path d="M0 250 Q160 200 320 240 T640 230 V360 H0Z" fill="#95d5b2"/>`+ground('#74c69d',282)+`<rect y="292" width="640" height="6" fill="#6c584c"/>`+[...Array(16)].map((_,i)=>`<rect x="${i*42}" y="288" width="22" height="14" fill="#a68a64"/>`).join('')+at(80,120,A('a-pop',.3,`<rect x="-60" y="-24" width="120" height="44" rx="10" fill="#fff"/>${T(0,10,'RUSSIA',{s:24,c:'#c1121f'})}`))+at(560,120,A('a-pop',1.2,`<rect x="-68" y="-24" width="136" height="44" rx="10" fill="#fff"/>${T(0,10,'GERMANY',{s:24,c:'#1d3557'})}`))+A('a-fi',.8,`<path d="M160 120 H470" stroke="#1d3557" stroke-width="4" stroke-dasharray="10 8"/><path d="M470 110 L490 120 L470 130Z" fill="#1d3557"/>`)+A('a-mv',0,`<rect x="10" y="214" width="110" height="60" rx="10" fill="#c1121f"/><rect x="88" y="186" width="20" height="30" fill="#333"/>${A('a-flt','0','<circle cx="98" cy="170" r="10" fill="#fff" opacity=".8"/><circle cx="112" cy="152" r="13" fill="#fff" opacity=".6"/>')}<rect x="24" y="224" width="30" height="24" rx="4" fill="#bde0fe"/><circle cx="39" cy="234" r="7" fill="#f2c7a5"/><rect x="130" y="222" width="100" height="52" rx="8" fill="#1d3557"/><rect x="144" y="232" width="28" height="20" fill="#bde0fe"/><rect x="186" y="232" width="28" height="20" fill="#bde0fe"/>${wheel(36,276)}${wheel(96,276)}${wheel(154,276)}${wheel(208,276)}`,'--fx:-260px;--tx:330px;--t:6s')+at(320,60,A('a-pop',2,`<circle r="32" fill="#ffd166"/>${T(0,8,'Age 11',{s:20,c:'#222'})}`))},
+  {say:'He studied mathematics in Zurich and in Berlin.',svg:sky('#cdeac0','#f8f9fa')+ground('#a7c957',305)+at(320,300,`<rect x="-150" y="-140" width="300" height="140" fill="#f8edeb"/><path d="M-170 -140 L0 -210 L170 -140Z" fill="#b5838d"/>${[-120,-70,-20,30,80].map(x=>`<rect x="${x}" y="-130" width="22" height="120" fill="#e5e5e5" stroke="#bbb"/>`).join('')}<rect x="-170" y="-12" width="340" height="12" fill="#ddd"/>${T(0,-160,'UNIVERSITY',{s:20,c:'#fff'})}`)+at(110,90,A('a-pop',.4,`<rect x="-70" y="-24" width="140" height="44" rx="10" fill="#fff" stroke="#2d6a4f" stroke-width="3"/>${T(0,10,'ZURICH',{s:24,c:'#2d6a4f'})}`))+at(530,90,A('a-pop',1.6,`<rect x="-70" y="-24" width="140" height="44" rx="10" fill="#fff" stroke="#2d6a4f" stroke-width="3"/>${T(0,10,'BERLIN',{s:24,c:'#2d6a4f'})}`))+guy(110,280,1,{coat:'#2d6a4f',arm:'book'})+book(70,170,'#e63946',.2)+book(150,150,'#457b9d',.8)+book(190,190,'#f4a261',1.3)+A('a-fi',1,T(560,250,'a² + b²',{s:24,c:'#2d6a4f'})+T(470,200,'∑',{s:34,c:'#2d6a4f'}))},
+  {say:'He became a professor at the University of Halle and taught there for the rest of his life.',svg:sky('#ffe8d6','#fff1e6')+ground('#cb997e',300)+`<rect x="150" y="60" width="420" height="190" rx="8" fill="#8b5e34"/><rect x="164" y="72" width="392" height="166" fill="#1b4332"/>`+A('a-wipe',.6,T(360,145,'N = {1, 2, 3, 4, …}',{s:40,c:'#f8f9fa'}),'--t:2.6s')+A('a-wipe',3,T(360,205,'goes on forever: ∞',{s:30,c:'#ffd166'}),'--t:1.8s')+guy(90,280,1.05,{coat:'#3a5a40',beard:'#5c4033',arm:'up'})+at(360,40,A('a-pop',.2,`<rect x="-130" y="-20" width="260" height="36" rx="10" fill="#fff"/>${T(0,8,'University of Halle',{s:20,c:'#3a5a40'})}`))},
+  {say:'Cantor created set theory. He proved that some infinities are bigger than others, and he showed that the natural numbers and the integers are the same size of infinity!',svg:sky('#10002b','#3c096c')+stars(30,360)+A('a-draw',.2,`<path d="M210 120 C210 70 300 70 320 120 C340 170 430 170 430 120 C430 70 340 70 320 120 C300 170 210 170 210 120Z" fill="none" stroke="#ffd166" stroke-width="9" stroke-linecap="round"/>`,'--len:640;--t:2.4s')+at(530,110,A('a-pop',2.2,A('a-glow','0',T(0,18,'ℵ₀',{s:58,c:'#ffd166'}))))+[1,2,3,4,5].map((n,i)=>at(150+i*80,235,A('a-pop',2.6+i*.35,`<circle r="22" fill="#52b788"/>${T(0,9,n,{s:24})}`))).join('')+T(560,243,'…',{s:30})+[0,1,-1,2,-2].map((n,i)=>at(150+i*80,320,A('a-pop',2.8+i*.35,`<circle r="22" fill="#4895ef"/>${T(0,9,n<0?'–'+(-n):n,{s:22})}`))).join('')+T(560,328,'…',{s:30})+[0,1,2,3,4].map(i=>A('a-fi',3+i*.35,`<line x1="${150+i*80}" y1="258" x2="${150+i*80}" y2="297" stroke="#fff" stroke-width="3" stroke-dasharray="5 4"/>`)).join('')},
+  {say:'Many mathematicians rejected his new ideas about infinity, but Cantor never gave up.',svg:sky('#e5e5e5','#f8f9fa')+ground('#adb5bd',300)+guy(110,280,.95,{coat:'#6c757d',hair:'#adb5bd',beard:'#adb5bd',cls:'a-shake'})+guy(530,280,.95,{coat:'#495057',hair:'#343a40',cls:'a-shake',st:'--d:.2s'})+bub(130,90,120,'No!',.4,{c:'#c1121f'})+bub(510,90,170,'Impossible!',.9,{c:'#c1121f',tx:6,tl:20})+guy(320,280,1.1,{coat:'#2d6a4f',beard:'#5c4033',arm:'up'})+at(363,150,A('a-pop',1.4,A('a-glow','0',T(0,0,'∞',{s:60,c:'#f4a261'}))))+at(320,330,A('a-pop',2.4,`<rect x="-120" y="-22" width="240" height="40" rx="12" fill="#2d6a4f"/>${T(0,8,'Never give up!',{s:22})}`))},
+  {say:'Later, the great mathematician David Hilbert said: No one shall expel us from the paradise that Cantor has created.',svg:sky('#caf0f8','#ffffff')+`<circle cx="560" cy="70" r="36" fill="#ffd166"/>`+ground('#95d5b2',270)+[60,150,240,400,490,580].map((x,i)=>at(x,300,A('a-grow',i*.25,`<path d="M0 0 V-60" stroke="#2d6a4f" stroke-width="5"/><path d="M0 -30 q-14 -10 -20 0 q10 6 20 0" fill="#52b788"/>${T(0,-62,'∞',{s:40,c:['#e63946','#f4a261','#9d4edd','#4895ef','#ff006e','#fb8500'][i]})}`,'transform-origin:bottom center'))).join('')+at(320,120,A('a-pop',.8,`<rect x="-285" y="-62" width="570" height="112" rx="22" fill="#fff" stroke="#2d6a4f" stroke-width="3"/>${T(0,-20,'“No one shall expel us from the paradise',{s:22,c:'#1b4332'})}${T(0,12,'that Cantor has created.”',{s:22,c:'#1b4332'})}${T(180,40,'– David Hilbert',{s:17,c:'#6c757d'})}`))}]};
+ C.brahma={title:'Brahmagupta – The rule-maker of zero',color:'#1150b0',scenes:[
+  {say:'Brahmagupta was born in India in the year 598, about one thousand four hundred years ago.',svg:sky('#ff9e00','#ffd6a5')+`<circle cx="320" cy="250" r="80" fill="#ffbe0b" opacity=".9"/>`+ground('#bc6c25',290)+palm(70)+palm(570)+at(320,290,`<path d="M-90 0 V-60 H-60 V-100 H-30 V-140 L0 -190 L30 -140 V-100 H60 V-60 H90 V0Z" fill="#9c6644"/><path d="M-14 0 V-34 Q0 -50 14 -34 V0Z" fill="#432818"/>`)+at(320,70,A('a-pop',.5,`<rect x="-120" y="-30" width="240" height="56" rx="16" fill="#0008"/>${T(0,10,'India · 598',{s:32,c:'#ffd166'})}`))},
+  {say:'He became the head of the observatory at Ujjain, the centre of mathematics in India at that time. He studied the stars and the planets.',svg:sky('#03045e','#0077b6')+stars(40,240)+at(470,110,`<circle r="60" fill="none" stroke="#ffffff33" stroke-width="2"/>${A('a-spin','0','<circle cx="-60" cy="0" r="9" fill="none"/><circle cx="60" cy="0" r="9" fill="#ffb703"/>','--t:5s')}<circle r="16" fill="#ffd60a"/>`)+ground('#3a0ca3',300)+at(220,300,`<rect x="-90" y="-80" width="180" height="80" fill="#e9c46a"/><path d="M-70 -80 A70 70 0 0 1 70 -80Z" fill="#f4a261"/><rect x="-6" y="-146" width="12" height="60" fill="#264653" transform="rotate(30 0 -80)"/>`)+guy(380,282,1,{coat:'#e76f51',turban:'#f4a261',beard:'#222',skin:'#c68642',arm:'up'})+at(220,330,A('a-pop',.8,`<rect x="-130" y="-20" width="260" height="36" rx="10" fill="#fff"/>${T(0,8,'Ujjain Observatory',{s:20,c:'#3a0ca3'})}`))},
+  {cap:'When he was only 30 years old, in 628, he wrote his great book, the Brāhmasphuṭasiddhānta, in the form of a long poem.',say:'When he was only thirty years old, in the year 628, he wrote his great book, the Brahmasphutasiddhanta, in the form of a long poem.',svg:sky('#fefae0','#faedcd')+at(330,40,A('a-grow',.2,`<rect x="-170" y="0" width="340" height="270" rx="6" fill="#f4e3c1" stroke="#bc6c25" stroke-width="3"/>${[0,1,2,3,4,5].map(i=>A('a-wipe',1+i*.6,`<path d="M-140 ${46+i*36} q20 -10 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0" stroke="#6f4518" stroke-width="3" fill="none"/>`,'--t:.8s')).join('')}`))+`<rect x="150" y="30" width="360" height="16" rx="8" fill="#bc6c25"/>`+at(330,330,A('a-fi',.6,T(0,0,'Brāhmasphuṭasiddhānta · 628',{s:24,c:'#6f4518'})))+at(80,90,A('a-pop',3.8,`<circle r="44" fill="#e76f51"/>${T(0,-2,'Age',{s:18})}${T(0,22,'30',{s:28})}`))+guy(570,300,.95,{coat:'#e76f51',turban:'#f4a261',beard:'#222',skin:'#c68642',arm:'book'})},
+  {say:'He was one of the first mathematicians to treat zero as a number.',svg:sky('#240046','#5a189a')+at(320,180,A('a-spin','0',[...Array(12)].map((_,i)=>`<rect x="-4" y="-150" width="8" height="40" rx="4" fill="#ffd60a" transform="rotate(${i*30})"/>`).join(''),'--t:14s'))+at(320,180,A('a-pop',.3,A('a-glow','0',`<circle r="95" fill="#ffd60a" opacity=".25"/>${T(0,55,'0',{s:160,c:'#ffd60a'})}`)))+[1,2,3,4,5,6,7,8,9].map((n,i)=>{const a=i/9*6.28;return at(320+Math.cos(a)*230,180+Math.sin(a)*140,A('a-pop',1+i*.2,T(0,10,n,{s:30,c:'#e0aaff'})))}).join('')},
+  {say:'He also gave the sign rules. He said: a debt times a debt is a fortune. Today we write: negative times negative equals positive.',svg:sky('#fff3b0','#ffe8d6')+coin(110,140,'#d62828','–',.3)+at(205,150,A('a-pop',.8,T(0,0,'×',{s:56,c:'#333'})))+coin(300,140,'#d62828','–',1.2)+at(395,150,A('a-pop',1.7,T(0,0,'=',{s:56,c:'#333'})))+at(500,140,A('a-pop',2.2,A('a-glow','0',`<circle r="46" fill="#ffb703" stroke="#e85d04" stroke-width="6"/>${T(0,16,'+',{s:54})}`)))+at(110,215,A('a-fi',.6,T(0,0,'debt',{s:22,c:'#d62828'})))+at(300,215,A('a-fi',1.4,T(0,0,'debt',{s:22,c:'#d62828'})))+at(500,215,A('a-fi',2.4,T(0,0,'fortune',{s:22,c:'#e85d04'})))+at(320,300,A('a-pop',3,`<rect x="-170" y="-32" width="340" height="56" rx="16" fill="#1150b0"/>${T(0,10,'(–) · (–) = (+)',{s:32})}`))},
+  {say:'He believed that zero divided by zero is zero. Today we know that division by zero is undefined.',svg:sky('#e0fbfc','#c2dfe3')+at(320,150,A('a-fi',.2,T(0,0,'0 ÷ 0 = 0',{s:76,c:'#253237'})))+A('a-draw',1.8,`<path d="M150 80 L490 190 M490 80 L150 190" stroke="#d62828" stroke-width="12" stroke-linecap="round"/>`,'--len:400;--t:.9s')+at(320,280,A('a-pop',2.8,`<rect x="-150" y="-34" width="300" height="60" rx="18" fill="#d62828"/>${T(0,10,'Undefined!',{s:34})}`))+[80,560,120,520].map((x,i)=>at(x,[80,90,260,250][i],A('a-flt',i*.4,T(0,0,'?',{s:48,c:'#5c677d'})))).join('')},
+  {say:'So the sign rules you learn in Chapter 2 are more than one thousand four hundred years old!',svg:sky('#1150b0','#4895ef')+stars(20,360)+at(320,130,A('a-pop',.3,`<rect x="-230" y="-50" width="460" height="96" rx="24" fill="#fff"/>${T(0,10,'(–) · (–) = (+)',{s:44,c:'#1150b0'})}`))+at(320,250,A('a-pop',1.2,A('a-glow','0',T(0,0,'1,400+ years old!',{s:44,c:'#ffd166'}))))}]};
+ C.descartes={title:'René Descartes – The man who gave us x³',color:'#b3220f',scenes:[
+  {say:'René Descartes was born in 1596 in La Haye, France.',svg:sky('#90e0ef','#caf0f8')+`<circle cx="90" cy="70" r="34" fill="#ffd166"/>`+ground('#80b918',300)+house(170,110,90,'#fff1e6','#9d0208')+house(330,90,120,'#fde2e4','#6a040f')+house(480,120,80,'#fff1e6','#9d0208')+at(320,60,A('a-pop',.5,`<rect x="-175" y="-30" width="350" height="56" rx="16" fill="#0008"/>${T(0,10,'La Haye, France · 1596',{s:28,c:'#ffd166'})}`))},
+  {say:'As a child he was often ill, so he was allowed to stay in bed in the mornings. Thinking in bed became a habit for his whole life.',svg:`<rect width="640" height="360" fill="#ffe5d9"/><rect x="430" y="40" width="160" height="130" fill="#90e0ef" stroke="#8d6e63" stroke-width="8"/>`+at(510,160,A('a-rise',0,`<circle r="30" fill="#ffb703"/>`))+`<rect x="430" y="146" width="160" height="24" fill="#ffe5d9"/><rect x="0" y="300" width="640" height="60" fill="#bc8a5f"/>`+at(240,300,`<rect x="-180" y="-70" width="20" height="100" fill="#6f4518"/><rect x="160" y="-40" width="20" height="70" fill="#6f4518"/><rect x="-170" y="-40" width="340" height="40" rx="6" fill="#fff"/><rect x="-150" y="-62" width="70" height="28" rx="12" fill="#fff" stroke="#ddd"/><circle cx="-112" cy="-62" r="20" fill="#f2c7a5"/><path d="M-132 -66 Q-112 -92 -92 -66 Q-112 -78 -132 -66Z" fill="#3d2817"/><circle cx="-118" cy="-62" r="2.5" fill="#222"/><circle cx="-105" cy="-62" r="2.5" fill="#222"/><path d="M-100 -46 Q20 -66 160 -40 L160 -10 L-100 -10Z" fill="#4895ef"/>`)+think(150,120,'?',1)+think(250,80,'1 + 1',2.2)+think(360,130,'x',3.4)},
+  {say:'He lived in the Netherlands for twenty years and wrote his most important works there.',svg:sky('#a2d2ff','#e7f5ff')+ground('#70e000',280)+`<rect y="300" width="640" height="18" fill="#4895ef"/>`+at(400,280,`<path d="M-40 0 L-24 -170 H24 L40 0Z" fill="#9c6644"/><rect x="-12" y="-40" width="24" height="40" fill="#432818"/>`)+at(400,110,A('a-spin','0',[0,90,180,270].map(a=>`<g transform="rotate(${a})"><rect x="-8" y="-118" width="16" height="110" fill="#f8f9fa" stroke="#6c757d" stroke-width="2"/></g>`).join('')+'<circle r="10" fill="#6c757d"/>','--t:4s'))+[...Array(14)].map((_,i)=>at(30+i*24+(i>6?340:0)*0,334-(i%2)*6,`<path d="M0 0 V-18" stroke="#2d6a4f" stroke-width="3"/><path d="M-8 -26 Q0 -14 8 -26 Q8 -36 0 -32 Q-8 -36 -8 -26Z" fill="${['#e63946','#ffb703','#ff006e'][i%3]}"/>`)).join('')+guy(130,270,.9,{coat:'#6a040f',hair:'#2b2118',wig:1,mus:1,arm:'book'})+at(500,40,A('a-pop',.6,`<rect x="-130" y="-22" width="260" height="40" rx="12" fill="#fff"/>${T(0,8,'Netherlands · 20 years',{s:20,c:'#1d3557'})}`))},
+  {say:'In 1637 he published La Géométrie. He made popular the way we write powers, like x squared and x cubed, and he used x, y and z for unknown numbers.',svg:sky('#fff8e7','#ffe8cc')+`<rect y="270" width="640" height="90" fill="#8d6e63"/>`+at(330,250,A('a-pop',.3,`<path d="M0 0 L-170 -20 L-170 -170 L0 -150Z" fill="#fffdf7" stroke="#6f4518" stroke-width="3"/><path d="M0 0 L170 -20 L170 -170 L0 -150Z" fill="#fffdf7" stroke="#6f4518" stroke-width="3"/>${T(-85,-110,'La',{s:26,c:'#6a040f'})}${T(-85,-78,'Géométrie',{s:24,c:'#6a040f'})}${T(-85,-44,'1637',{s:22,c:'#6f4518'})}`))+[['x²',1.4,540,110],['x³',2,585,150],['x⁴',2.6,545,190]].map(([t,d,px,py])=>at(px,py,A('a-pop',d,T(0,0,t,{s:38,c:'#b3220f'})))).join('')+[['x',3.4],['y',3.8],['z',4.2]].map(([t,d],i)=>at(410+i*50,215,A('a-pop',d,`<circle r="20" fill="#b3220f"/>${T(0,9,t,{s:26})}`))).join('')+guy(90,300,.9,{coat:'#6a040f',hair:'#2b2118',wig:1,mus:1,arm:'up'})},
+  {say:'A story says he got the idea of coordinates by watching a fly on the ceiling. He noticed that every position of the fly could be described with two numbers.',svg:`<rect width="640" height="360" fill="#fdf0d5"/>`+grid('#e3c9a8')+`<line x1="100" y1="300" x2="560" y2="300" stroke="#6f4518" stroke-width="3"/><line x1="100" y1="300" x2="100" y2="10" stroke="#6f4518" stroke-width="3"/>`+[...Array(11)].map((_,i)=>T(100+i*40,322,i,{s:13,c:'#6f4518'})).join('')+[...Array(7)].map((_,i)=>i?T(86,305-i*40,i,{s:13,c:'#6f4518'}):'').join('')+at(220,100,A('a-fly',0,`${A('a-flap','0','<ellipse cx="-8" cy="-10" rx="10" ry="6" fill="#bde0fe" opacity=".85"/><ellipse cx="8" cy="-10" rx="10" ry="6" fill="#bde0fe" opacity=".85"/>')}<ellipse rx="8" ry="11" fill="#222"/><circle cy="-11" r="5" fill="#222"/><circle cx="-2" cy="-12" r="1.5" fill="#e63946"/><circle cx="2" cy="-12" r="1.5" fill="#e63946"/>`))+[[220,100,'(3, 5)',.4],[340,60,'(6, 6)',2],[460,140,'(9, 4)',4.3],[300,220,'(5, 2)',6.2]].map(([x,y,t,d])=>at(x,y,A('a-pop',d,`<circle r="5" fill="#b3220f"/><rect x="10" y="-34" width="74" height="28" rx="8" fill="#b3220f"/>${T(47,-14,t,{s:17})}`))).join('')},
+  {say:'This idea became the coordinate plane, which we call the Cartesian plane today.',svg:`<rect width="640" height="360" fill="#fff"/>`+grid('#edf2f4')+`<line x1="320" y1="20" x2="320" y2="300" stroke="#333" stroke-width="2.5"/><line x1="100" y1="260" x2="540" y2="260" stroke="#333" stroke-width="2.5"/><path d="M540 260 l-10 -6 v12z M320 20 l-6 10 h12z" fill="#333"/>`+T(550,250,'x',{s:20,c:'#333',a:'start'})+T(330,24,'y',{s:20,c:'#333',a:'start'})+A('a-draw',.4,'<path d="M180 20 Q320 500 460 20" fill="none" stroke="#b3220f" stroke-width="5" stroke-linecap="round"/>','--len:700;--t:2.8s')+at(320,330,A('a-pop',2.6,`<rect x="-150" y="-24" width="300" height="42" rx="12" fill="#b3220f"/>${T(0,6,'The Cartesian plane',{s:24})}`))+at(160,90,A('a-pop',3.2,`<rect x="-60" y="-26" width="120" height="48" rx="12" fill="#fff3e2" stroke="#b3220f" stroke-width="2"/>${T(0,8,'y = x²',{s:26,c:'#b3220f'})}`))},
+  {say:'Descartes died in 1650 in Stockholm, Sweden. Every time you write an exponent like 3 to the power of 5, you use the way Descartes made popular.',svg:sky('#457b9d','#a8dadc')+ground('#f1faee',300)+house(120,100,110,'#e9c46a','#264653')+house(250,80,150,'#f4a261','#264653')+house(390,110,100,'#e76f51','#264653')+house(530,90,130,'#e9c46a','#264653')+snow(40)+at(320,70,A('a-pop',.4,`<rect x="-160" y="-28" width="320" height="54" rx="16" fill="#0008"/>${T(0,10,'Stockholm · 1650',{s:30,c:'#fff'})}`))+at(320,195,A('a-pop',2,A('a-glow','0',`<circle r="54" fill="#fff"/>${T(-6,22,'3',{s:64,c:'#b3220f'})}${T(24,-8,'5',{s:34,c:'#b3220f'})}`)))}]};
+ return C})();
+const $v=id=>document.getElementById(id);
+const VP={k:null,i:0,paused:false,muted:false,tm:0,tok:0,ended:false};
+function vOpen(k){if(!STORIES[k])return;stopTalk();VP.k=k;VP.paused=false;VP.ended=false;$v('vid').hidden=false;$v('vid').style.setProperty('--vc',STORIES[k].color);$v('vtitle').textContent='🎬 '+STORIES[k].title;
+ $v('vdots').innerHTML=STORIES[k].scenes.map((s,i)=>`<i data-i="${i}" title="Scene ${i+1}"></i>`).join('');vShow(0)}
+function vClose(){VP.tok++;clearTimeout(VP.tm);try{speechSynthesis.cancel()}catch(e){}$v('vid').hidden=true;$v('vstage').innerHTML=''}
+function vShow(i){const sc=STORIES[VP.k].scenes;i=Math.max(0,Math.min(sc.length-1,i));VP.i=i;VP.ended=false;VP.tok++;clearTimeout(VP.tm);try{speechSynthesis.cancel()}catch(e){}
+ const st=$v('vstage');st.classList.toggle('paused',VP.paused);st.innerHTML=`<svg viewBox="0 0 640 360" role="img" aria-label="${esc(sc[i].cap||sc[i].say)}">${sc[i].svg}</svg>`;
+ [...$v('vdots').children].forEach((d,k)=>d.classList.toggle('on',k===i));$v('vcap').textContent=sc[i].cap||sc[i].say;
+ $v('vplay').textContent=VP.paused?'▶':'⏸';$v('vmute').textContent=VP.muted?'🔇':'🔊';if(!VP.paused)vNarrate()}
+function vNarrate(){const sc=STORIES[VP.k].scenes[VP.i],tok=VP.tok,t0=Date.now(),minD=Math.max(4200,sc.say.length*55);let done=false;
+ const after=()=>{if(done||tok!==VP.tok||VP.paused)return;done=true;VP.tm=setTimeout(()=>{if(tok!==VP.tok)return;if(VP.i<STORIES[VP.k].scenes.length-1)vShow(VP.i+1);else{VP.ended=true;$v('vplay').textContent='↺'}},Math.max(1200,minD-(Date.now()-t0)))};
+ const ms=Math.max(5000,sc.say.length*78);
+ if(VP.muted||!('speechSynthesis' in window)){VP.tm=setTimeout(after,ms);return}
+ const parts=sc.say.split(/(?<=[.!?:])\s+/);parts.forEach((p,k)=>{const u=new SpeechSynthesisUtterance(p);u.lang='en-US';if(voice)u.voice=voice;u.rate=+($v('rate')?.value||.9);if(k===parts.length-1)u.onend=u.onerror=after;speechSynthesis.speak(u)});
+ setTimeout(after,ms*2.5)}
+$v('vx').onclick=vClose;
+$v('vid').addEventListener('click',e=>{if(e.target.id==='vid')vClose()});
+$v('vprev').onclick=()=>vShow(VP.i-1);$v('vnext').onclick=()=>vShow(VP.i+1);
+$v('vplay').onclick=()=>{if(VP.ended){VP.paused=false;vShow(0);return}
+ if(!VP.paused){VP.paused=true;VP.tok++;clearTimeout(VP.tm);try{speechSynthesis.cancel()}catch(e){}$v('vstage').classList.add('paused');$v('vplay').textContent='▶'}
+ else{VP.paused=false;$v('vstage').classList.remove('paused');$v('vplay').textContent='⏸';VP.tok++;vNarrate()}};
+$v('vmute').onclick=()=>{VP.muted=!VP.muted;vShow(VP.i)};
+$v('vdots').addEventListener('click',e=>{const d=e.target.closest('i');if(d)vShow(+d.dataset.i)});
+document.addEventListener('keydown',e=>{if($v('vid').hidden)return;if(e.key==='Escape')vClose();if(e.key===' '){e.preventDefault();$v('vplay').click()}});
+/* listening keys for continue / start over */
+document.querySelectorAll('.say,.bsay,.hsay,.psay').forEach((b,i)=>b.dataset.lk='L'+i);markRes();
+
+/* ---------- animated, interactive math background ---------- */
+const BGFX=(()=>{
+ const TH={
+  0:{bg:'#e6f1e8',c:['#2e9e3a','#2f6fe0','#f39a2b','#1d6b25'],s:['+','−','×','÷','=','π','√','∞','%','x²','1','2','3','∑','Δ','?']},
+  1:{bg:'#e3f4ea',c:['#18b257','#0f6b35','#3cc277','#2563c9'],s:['N','W','Z','Z⁺','Z⁻','∞','0','1','2','3','7','9','{ }','…','−5','ℵ₀','−1','100']},
+  2:{bg:'#e2f0fb',c:['#2aa6ee','#1150b0','#d42020','#2563c9'],s:['+','−','×','÷','=','·','+','−','×','÷','(−)·(−)=(+)','−4','+7','5+13','±']},
+  3:{bg:'#fdf0df',c:['#f5a23a','#b3220f','#e8590c','#d9480f'],s:['( )','[ ]','{ }','√','x²','2³','√25','B','E','D','M','A','S','π','5²','3⁵','√49']},
+  4:{bg:'#e6f1e8',c:['#2e9e3a','#1d6b25','#ffb703'],s:['✓','★','✔','A+','100','✓','★']}};
+ const cv=document.getElementById('bgfx'),cx=cv.getContext('2d');
+ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ let W=0,H=0,dpr=1,cur=0,ps=[],bursts=[],px=-999,py=-999,on=true,raf=0,last=0;
+ try{on=localStorage.getItem('em1-fx')!=='0'}catch(e){}
+ const rnd=(a,b)=>a+Math.random()*(b-a),pick=a=>a[Math.floor(Math.random()*a.length)];
+ function size(){dpr=Math.min(2,devicePixelRatio||1);W=innerWidth;H=innerHeight;cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0)}
+ function count(){return Math.round(Math.min(46,Math.max(22,W*H/26000)))}
+ function mk(p,fresh){const t=TH[cur];p=p||{};Object.assign(p,{x:rnd(0,W),y:fresh?rnd(0,H):H+40,vx:rnd(-.18,.18),vy:rnd(-.45,-.12),r:rnd(0,6.28),vr:rnd(-.006,.006),z:rnd(.55,1.35),s:pick(t.s),c:pick(t.c),a:0,ta:rnd(.2,.4),th:cur,out:false,ph:rnd(0,6.28)});return p}
+ function fill(){const n=count();while(ps.length<n)ps.push(mk(null,true));ps.length=n}
+ function theme(k){k=TH[k]?k:0;if(k===cur&&ps.length)return;cur=k;document.body.style.backgroundColor=on?TH[k].bg:'';ps.forEach((p,i)=>{p.out=true;p.delay=i*18})}
+ function burst(x,y){const t=TH[cur];for(let i=0;i<10;i++){const an=i/10*6.28+rnd(-.2,.2),sp=rnd(1.6,3.6);bursts.push({x,y,vx:Math.cos(an)*sp,vy:Math.sin(an)*sp,s:pick(t.s),c:pick(t.c),a:.9,r:rnd(0,6.28),vr:rnd(-.08,.08),z:rnd(.5,.9)})}}
+ function draw(p,font){cx.save();cx.translate(p.x,p.y);cx.rotate(p.r);cx.globalAlpha=Math.max(0,p.a);cx.fillStyle=p.c;cx.font=`${Math.round(font*p.z)}px 'Lilita One','Nunito',system-ui,sans-serif`;cx.textAlign='center';cx.textBaseline='middle';cx.fillText(p.s,0,0);cx.restore()}
+ function frame(ts){raf=0;if(!on||document.hidden)return;const dt=Math.min(3,(ts-(last||ts))/16.7||1);last=ts;
+  cx.clearRect(0,0,W,H);const base=Math.max(26,Math.min(46,W/18));
+  ps.forEach(p=>{
+   if(p.out){if(p.delay>0)p.delay-=16*dt;else{p.a-=.02*dt;if(p.a<=0){mk(p,true);}}}
+   else if(p.a<p.ta)p.a=Math.min(p.ta,p.a+.006*dt);
+   const dx=p.x-px,dy=p.y-py,d=Math.hypot(dx,dy);
+   if(d<140&&d>0){const f=(140-d)/140*1.6;p.vx+=dx/d*f*.35*dt;p.vy+=dy/d*f*.35*dt;p.vr+=(Math.random()-.5)*.01;p.a=Math.min(.6,p.a+.02)}
+   p.vx*=.97;p.vy=p.vy*.97+(-.22*p.z)*.03;p.vr*=.995;p.ph+=.02*dt;
+   p.x+=(p.vx+Math.sin(p.ph)*.25)*dt;p.y+=p.vy*dt;p.r+=p.vr*dt;
+   if(p.y<-60){mk(p,false)}if(p.x<-60)p.x=W+50;if(p.x>W+60)p.x=-50;
+   draw(p,base)});
+  bursts=bursts.filter(b=>{b.x+=b.vx*dt;b.y+=b.vy*dt;b.vx*=.95;b.vy=b.vy*.95+.03;b.r+=b.vr*dt;b.a-=.018*dt;if(b.a>0)draw(b,base);return b.a>0});
+  raf=requestAnimationFrame(frame)}
+ function start(){if(!raf&&on&&!reduce)raf=requestAnimationFrame(frame)}
+ function still(){cx.clearRect(0,0,W,H);if(on)ps.forEach(p=>{p.a=p.ta;draw(p,Math.max(26,Math.min(46,W/18)))})}
+ function set(v){on=v;try{localStorage.setItem('em1-fx',v?'1':'0')}catch(e){}document.body.style.backgroundColor=v?TH[cur].bg:'';if(v){reduce?still():start()}else{cancelAnimationFrame(raf);raf=0;cx.clearRect(0,0,W,H)}}
+ size();fill();document.body.style.backgroundColor=on?TH[0].bg:'';
+ addEventListener('resize',()=>{size();fill();if(reduce)still()});
+ addEventListener('pointermove',e=>{px=e.clientX;py=e.clientY},{passive:true});
+ addEventListener('pointerleave',()=>{px=py=-999});
+ addEventListener('touchend',()=>setTimeout(()=>{px=py=-999},350),{passive:true});
+ addEventListener('pointerdown',e=>{px=e.clientX;py=e.clientY;if(!on||reduce)return;if(e.target.closest('.page,.top,.nav,#drawer,button,input,a'))return;burst(e.clientX,e.clientY)});
+ document.addEventListener('visibilitychange',()=>{last=0;start()});
+ const sw=document.getElementById('fxon');sw.checked=on;sw.addEventListener('change',()=>set(sw.checked));
+ if(reduce)still();else start();
+ return{theme:k=>{theme(k);if(reduce)still()}};
+})();
+
+/* ---------- navigation ---------- */
+const pages=[...document.querySelectorAll('.page')];let cur=-1;
+function go(i,dir){i=Math.max(0,Math.min(pages.length-1,i));if(i===cur)return;stopTalk();const back=cur>i;
+ if(cur>=0)pages[cur].classList.remove('on','fn','fp');cur=i;const p=pages[i];p.classList.add('on',back?'fp':'fn');
+ p.querySelectorAll('svg.nl').forEach(s=>{if(!s.classList.contains('hid')||s.classList.contains('rev'))replay(s)});
+ BGFX.theme(P[i].ch);document.getElementById('pg').textContent=`${i+1} / ${pages.length}`;
+ document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===pages.length-1;
+ document.querySelectorAll('#toc a').forEach(a=>a.classList.toggle('cur',+a.dataset.go===i));
+ window.scrollTo({top:0});S.page=i;save();history.replaceState(null,'','#'+(i+1));closeD()}
+const drawer=document.getElementById('drawer'),scrim=document.getElementById('scrim');
+const openD=()=>{drawer.classList.add('open');scrim.classList.add('open')},closeD=()=>{drawer.classList.remove('open');scrim.classList.remove('open')};
+document.getElementById('menuBtn').onclick=openD;document.getElementById('pg').onclick=openD;scrim.onclick=closeD;
+document.getElementById('prev').onclick=()=>go(cur-1);document.getElementById('next').onclick=()=>go(cur+1);
+document.getElementById('home').onclick=()=>go(P.findIndex(p=>p.html.includes('id="contents"')));
+document.addEventListener('click',e=>{const a=e.target.closest('[data-go]');if(a){e.preventDefault();go(+a.dataset.go)}});
+document.addEventListener('keydown',e=>{if(e.target.matches('input')||!document.getElementById('vid').hidden)return;if(e.key==='ArrowRight')go(cur+1);if(e.key==='ArrowLeft')go(cur-1);if(e.key==='Escape')closeD()});
+let tx=0,ty=0;book.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY},{passive:true});
+book.addEventListener('touchend',e=>{if(e.target.closest('input,button,svg'))return;const dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ty;if(Math.abs(dx)>70&&Math.abs(dy)<45)go(cur+(dx<0?1:-1))},{passive:true});
+const h=parseInt(location.hash.slice(1));go(h>0?h-1:(S.page||0));
+</script>
+</body>
+</html>
